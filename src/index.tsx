@@ -46,6 +46,10 @@ const router = createBrowserRouter([
         path: "/faq",
         element: <FAQPage />,
       },
+      {
+        path: "/pvm",
+        element: <InfoPage />,
+      },
     ],
   },
 ]);

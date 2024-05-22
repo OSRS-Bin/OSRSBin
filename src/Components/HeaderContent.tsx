@@ -27,7 +27,7 @@ export default function HomePage() {
               <Link to="/about">Import</Link>
             </button>
             <button>
-              <Link to="/contact">PvM</Link>
+              <Link to="/pvm">PvM</Link>
             </button>
             <button>
               <Link to="/login">Skilling</Link>
@@ -36,7 +36,7 @@ export default function HomePage() {
               <Link to="/login">Misc</Link>
             </button>
           </div>
-          <div className="style-bar"></div>
+          <div className="style-bar">test</div>
         </div>
       </nav>
       <header className="App-header">

@@ -1,5 +1,8 @@
 import tempImage from "../media/Lilly_Bench.jpg";
 import { useEffect, useState } from "react";
+import FeaturedCard from "./FeaturedCard";
+import SearchPageCard from "./SearchPageCard";
+import { getSearchPageContent } from "../utils";
 
 async function getInfo() {
   try {
@@ -31,19 +34,24 @@ function InfoPage() {
     setButtonText("Copied");
   };
 
-  return (
-    <div className="Content">
-      <div className="Description-Section">
-        <div className="Image-Description">
-          <img src={tempImage} className="Content-image" alt="content" />
-          <p className="Content-description">{info}</p>
-        </div>
-        <button className="Content-button" onClick={handleClick}>
-          {buttonText}
-        </button>
-      </div>
+  const searchCards = getSearchPageContent().searchPageCards.map((card) => (
+    <div className="a-search-card" key={card.title}>
+      <SearchPageCard
+        title={card.title}
+        author={card.author}
+        date={card.date}
+        views={card.views}
+        favorites={card.favorites}
+        installs={card.installs}
+        comments={card.comments}
+        description={card.description}
+        tags={card.tags}
+        image={card.image}
+      />
     </div>
-  );
+  ));
+
+  return <div className="Content">{searchCards}</div>;
 }
 
 export default InfoPage;
