@@ -30,25 +30,40 @@ const SearchPageCard: React.FC<CardData> = ({
       <div className="search-card-image">
         <img src={image} alt="Card Image" />
       </div>
+
       <div className="search-card-content">
-        <div className="search-card-title">
-          <h2>{title}</h2>
+        <div className="search-card-top">
+          <div className="search-card-title">
+            <h2>{title}</h2>
+          </div>
+
+          <div className="search-card-author">
+            <p>Author: {author}</p>
+
+            <p>Date: {date}</p>
+          </div>
+
+          <div className="search-card-stats">
+            <p>Views: {views}</p>
+
+            <p>Favorites: {favorites}</p>
+
+            <p>Installs: {installs}</p>
+
+            <p>Comments: {comments}</p>
+          </div>
         </div>
-        <div className="search-card-author">
-          <p>Author: {author}</p>
-          <p>Date: {date}</p>
-        </div>
-        <div className="search-card-stats">
-          <p>Views: {views}</p>
-          <p>Favorites: {favorites}</p>
-          <p>Installs: {installs}</p>
-          <p>Comments: {comments}</p>
-        </div>
-        <div className="search-card-description">
-          <p>Description: {description}</p>
-        </div>
-        <div className="search-card-tags">
-          <p>Tags: {JSON.stringify(tags)}</p>
+
+        <div className="divider" />
+
+        <div className="search-card-bottom">
+          <div className="search-card-description">
+            <p>Description: {description}</p>
+          </div>
+
+          <div className="search-card-tags">
+            <p>Tags: {JSON.stringify(tags)}</p>
+          </div>
         </div>
       </div>
     </div>

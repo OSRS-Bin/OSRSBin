@@ -177,6 +177,8 @@ body {
   flex-direction: row;
   justify-content: space-between;
   flex-grow: 1;
+  border: 1px solid gray;
+  margin: 10px 0;
 }
 
 .search-card-image {
@@ -190,15 +192,46 @@ body {
 
 .search-card-content {
   display: flex;
+
   flex-direction: column;
+
+  width: 100%;
+
+  align-items: flex-start;
+
+  justify-content: space-between;
 }
 
 .search-card-stats {
   display: flex;
-  justify-content: space-evenly;
+
+  justify-content: space-between;
+
+  width: 100%;
 }
 
 .search-card-author {
   display: flex;
-  justify-content: space-evenly;
+
+  justify-content: space-between;
+
+  width: 100%;
+}
+
+.search-card-bottom {
+  flex: 1;
+}
+
+.search-card-top {
+  flex: 1;
+
+  width: 100%;
+}
+
+.divider {
+  border-bottom: 1px solid white; /* Change color as needed */
+
+  margin: 10px 0; /* Adjust margin as needed */
+
+  width: 100%;
 }
