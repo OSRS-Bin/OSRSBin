@@ -9,6 +9,8 @@ interface Card {
   title: string;
   content: string;
   image?: string;
+  author: string;
+  installs: number;
 }
 
 const featuredCards = getHomePageContent().featuredCards.map((card: Card) => (
@@ -18,6 +20,8 @@ const featuredCards = getHomePageContent().featuredCards.map((card: Card) => (
       image={card.image}
       title={card.title}
       content={card.content}
+      author={card.author}
+      installs={card.installs}
     />
   </div>
 ));
