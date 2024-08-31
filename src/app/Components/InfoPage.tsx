@@ -1,3 +1,5 @@
+'use client'
+
 import tempImage from "../media/Lilly_Bench.jpg";
 import { useEffect, useState } from "react";
 import FeaturedCard from "./FeaturedCard";

@@ -1,6 +1,4 @@
-import { Link } from "react-router-dom";
-import logo from "../media/FU_logo.png";
-import "../index.css";
+import Link from 'next/link'
 
 export default function HomePage() {
   return (
@@ -9,38 +7,38 @@ export default function HomePage() {
         <div className="top-bar">
           <div className="left-button">
             <button>
-              <Link to="/">Home</Link>
+              <Link href="/">Home</Link>
             </button>
           </div>
           <div className="right-buttons">
             <button>
-              <Link to="/faq">FAQ</Link>
+              <Link href="/faq">FAQ</Link>
             </button>
             <button>
-              <Link to="/info">Info Page</Link>
+              <Link href="/info">Info Page</Link>
             </button>
           </div>
         </div>
         <div className="bottom-bar">
           <div className="drop-downs">
             <button>
-              <Link to="/about">Import</Link>
+              <Link href="/about">Import</Link>
             </button>
             <button>
-              <Link to="/pvm">PvM</Link>
+              <Link href="/pvm">PvM</Link>
             </button>
             <button>
-              <Link to="/login">Skilling</Link>
+              <Link href="/login">Skilling</Link>
             </button>
             <button>
-              <Link to="/login">Misc</Link>
+              <Link href="/login">Misc</Link>
             </button>
           </div>
           <div className="style-bar">test</div>
         </div>
       </nav>
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+        <img src='FU_logo.png' className="App-logo" alt="logo" />
         <h1>OSRS Bin</h1>
       </header>
       <div className="search-bar">
