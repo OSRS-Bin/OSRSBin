@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import HeaderContent from "./Components/HeaderContent";
+import HeaderContent from "../components/HeaderContent";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,10 +17,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <title>OSRSBin</title>
+      </head>
       <body className={inter.className}>
         <HeaderContent />
         {children}
-        </body>
+      </body>
     </html>
   );
 }

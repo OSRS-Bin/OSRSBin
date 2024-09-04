@@ -1,6 +1,6 @@
 import React from "react";
 import logo from "./logo.svg";
-import InfoPage from "./Components/InfoPage";
+import InfoPage from "../components/InfoPage";
 
 function App() {
   return (

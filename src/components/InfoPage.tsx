@@ -1,10 +1,10 @@
-'use client'
+"use client";
 
 import tempImage from "../media/Lilly_Bench.jpg";
 import { useEffect, useState } from "react";
 import FeaturedCard from "./FeaturedCard";
 import SearchPageCard from "./SearchPageCard";
-import { getSearchPageContent } from "../utils";
+import { getSearchPageContent } from "../lib/content";
 
 async function getInfo() {
   try {

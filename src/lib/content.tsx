@@ -1,5 +1,3 @@
-import exp from "constants";
-
 export function getHomePageContent() {
   return getFeaturedCardContent();
 }

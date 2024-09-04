@@ -3,14 +3,14 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./page";
 import reportWebVitals from "../../old/src/reportWebVitals";
-import HomePage from "./Components/HomePage";
+import HomePage from "../components/HomePage";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ProfilePage from "./ProfilePage";
 import NotFoundPage from "./NotFoundPage";
 import ProfilePages from "./ProfilePages";
-import InfoPage from "./Components/InfoPage";
-import FAQPage from "./Components/FAQPage";
-import HeaderContent from "./Components/HeaderContent";
+import InfoPage from "../components/InfoPage";
+import FAQPage from "../components/FAQPage";
+import HeaderContent from "../components/HeaderContent";
 import Layout from "./Components/Layout";
 
 const root = ReactDOM.createRoot(

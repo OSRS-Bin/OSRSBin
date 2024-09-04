@@ -1,6 +1,6 @@
 import React from "react";
 import logo from "../media/FU_logo.png";
-import { getHomePageContent } from "../utils";
+import { getHomePageContent } from "../lib/content";
 import "../index.css";
 import FeaturedCard from "./FeaturedCard";
 
