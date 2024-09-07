@@ -4,7 +4,7 @@ import tempImage from "../media/Lilly_Bench.jpg";
 import { useEffect, useState } from "react";
 import FeaturedCard from "./FeaturedCard";
 import SearchPageCard from "./SearchPageCard";
-import { getSearchPageContent } from "../lib/content";
+import { getSearchPageContent } from "../lib/data";
 
 async function getInfo() {
   try {
