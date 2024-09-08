@@ -22,7 +22,9 @@ export default function TilePack({ params }: { params: { id: string[] } }) {
       <h1 className="font-runescape text-6xl text-primary">{tilePack.name}</h1>
 
       <h2 className="sr-only">Data</h2>
-      <CopyButton text={tilePack.tiles}>Copy "{tilePack.name}" to Clipboard</CopyButton>
+      <CopyButton text={tilePack.tiles}>
+        Copy "{tilePack.name}" to Clipboard
+      </CopyButton>
       <details className="cursor-pointer">
         <summary className="font-runescape text-2xl">Data</summary>
         <textarea
@@ -74,12 +76,16 @@ export default function TilePack({ params }: { params: { id: string[] } }) {
       </ul>
 
       <h2 className="text-4xl font-runescape">Comments</h2>
-      {Array.from({ length: tilePack.commentCount }).map((_, i) => (
-        <div key={i} className="bg-card text-card-foreground p-4 rounded-lg">
-          <p className="font-runescape text-xl">{faker.internet.userName()}</p>
-          <p>{faker.lorem.sentences(3)}</p>
-        </div>
-      ))}
+      <ul className="grid grid-flow-row gap-4">
+        {Array.from({ length: tilePack.commentCount }).map((_, i) => (
+          <li key={i} className="bg-card text-card-foreground p-4 rounded-lg">
+            <p className="font-runescape text-xl">
+              {faker.internet.userName()}
+            </p>
+            <p>{faker.lorem.sentences(3)}</p>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

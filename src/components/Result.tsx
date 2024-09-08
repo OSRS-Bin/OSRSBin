@@ -45,7 +45,7 @@ export default function Result({
         )}
         <ul className="flex flex-wrap">
           <li>{tilePack.author.name}</li>
-          <li className="mx-2">&bull;</li>
+          <li className="mx-2" role="presentation">&bull;</li>
           <li>{formatNumber(tilePack.installCount)} installs</li>
         </ul>
         <p className="">{tilePack.description}</p>

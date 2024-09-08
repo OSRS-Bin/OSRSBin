@@ -21,8 +21,8 @@ export default function Tags() {
       <h1 className="font-runescape text-6xl text-primary">Tags</h1>
       <ul className="list-disc list-inside">
         {Array.from(tags.entries()).map(([tag, count]) => (
-          <li key={tag.name} className="">
-            <Link href={`tags/${tag.slug}`} key={tag.name} className="underline hover:text-foreground/80">
+          <li key={tag.name}>
+            <Link href={`tags/${tag.slug}`} className="underline hover:text-foreground/80">
               {tag.name}
             </Link>
             <span className="italic ms-2">({formatNumber(count)} packs)</span>

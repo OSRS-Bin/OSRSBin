@@ -13,11 +13,13 @@ export default function PopularSection() {
         <p>Check out what other people are&hellip; checking out!</p>
       </div>
 
-      <div className="grid grid-rows-3 grid-cols-1 md:grid-cols-3 md:grid-rows-1 gap-4 mt-6">
+      <ul className="grid grid-rows-3 grid-cols-1 md:grid-cols-3 md:grid-rows-1 gap-4 mt-6">
         {popularTilePacks.map((tilePack) => (
-          <Result key={tilePack.id} tilePack={tilePack} orientation="vertical" />
+          <li key={tilePack.id}>
+            <Result tilePack={tilePack} orientation="vertical" />
+          </li>
         ))}
-      </div>
+      </ul>
     </section>
   );
 }

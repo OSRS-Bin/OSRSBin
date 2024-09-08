@@ -16,43 +16,30 @@ const headerTags = [
   findTagBySlug("misc"),
 ];
 
-function headerTagLink(slug: string, name: string, isActive: boolean) {
-  return (
-    <li
-      key={slug}
-      className={isActive ? "px-4 py-1 border-primary border-2" : "px-4 py-1"}
-    >
-      <Link href={`/tags/${slug}`}>{name}</Link>
-    </li>
-  );
-}
-
 export default function Header() {
   const pathname = usePathname();
   return (
     <header className="font-runescape">
       <div className="bg-header">
-        <div className="container mx-auto px-8">
-          <nav className="flex justify-between items-center py-2">
-            <div className="text-4xl font-runescape">
-              <Link href="/">{appName}</Link>
-            </div>
-            <ul className="flex gap-8 text-3xl text-primary">
-              <li>
-                <Link href="/help">Help</Link>
-              </li>
-              <li>
-                <Link href="/logout">Logout</Link>
-              </li>
-            </ul>
-          </nav>
-        </div>
+        <nav className="flex justify-between items-center py-2 container mx-auto px-8">
+          <div className="text-4xl font-runescape">
+            <Link href="/">{appName}</Link>
+          </div>
+          <ul className="flex gap-8 text-3xl text-primary">
+            <li>
+              <Link href="/help">Help</Link>
+            </li>
+            <li>
+              <Link href="/logout">Logout</Link>
+            </li>
+          </ul>
+        </nav>
       </div>
       <div className="bg-header-lighter">
-        <div className="container mx-auto text-2xl px-8">
+        <nav className="container mx-auto text-2xl px-8">
           <ul className="flex gap-4 items-center">
             <li className="uppercase px-12 py-1 border-primary border-2">
-              Import
+              Upload
             </li>
             <ul className="flex gap-4 items-center">
               {headerTags.map((tag) => (
@@ -81,7 +68,7 @@ export default function Header() {
               </li>
             </ul>
           </ul>
-        </div>
+        </nav>
       </div>
     </header>
   );
