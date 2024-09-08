@@ -78,7 +78,7 @@ function createTilePack(
 ): TilePack {
   return {
     id,
-    slug: name.toLowerCase().replace(" ", "-"),
+    slug: name.toLowerCase().replace(/\W+/, "-"),
     imageHref,
     name: name,
     tiles: createRandomTileData(),

@@ -23,7 +23,7 @@ export default function TilePack({ params }: { params: { id: string[] } }) {
 
       <h2 className="sr-only">Data</h2>
       <CopyButton text={tilePack.tiles}>
-        Copy "{tilePack.name}" to Clipboard
+        Copy &quot;{tilePack.name}&quot; to Clipboard
       </CopyButton>
       <details className="cursor-pointer">
         <summary className="font-runescape text-2xl">Data</summary>

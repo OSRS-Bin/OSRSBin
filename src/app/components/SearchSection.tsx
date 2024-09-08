@@ -17,7 +17,6 @@ export default function SearchSection() {
         <Input placeholder="Search for tile packs" sz="lg" />
         <Button
           type="submit"
-          variant="secondary"
           size="lg"
           onClick={() => router.push("/tilepacks")}
         >
