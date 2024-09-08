@@ -7,12 +7,15 @@ export interface User {
 export interface Tag {
   id: string;
   name: string;
+  slug: string;
 }
 
 export interface TilePack {
   id: string;
+  slug: string;
   imageHref: string;
-  title: string;
+  name: string;
+  tiles: string;
   uploadDate: Date;
   description: string;
   author: User;

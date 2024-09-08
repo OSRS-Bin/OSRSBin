@@ -1,7 +1,7 @@
 import { appName } from "@/lib/constants";
 
 const siteAuthors = ["Comrade Fund", "Comrade Bits", "ComradeCosmo", "Tim"];
-const copyrightYear = "2024";
+const copyrightYear = new Date().getFullYear().toString();
 
 export default function Footer() {
   return (
@@ -9,7 +9,7 @@ export default function Footer() {
       <ul className="flex justify-center">
         {siteAuthors.map((author, index) => (
           <>
-            <li>{author}</li>
+            <li key="author">{author}</li>
             {/* bullet separator if not last */}
             {index < siteAuthors.length - 1 && (
               <li role="presentation" className="px-2">
