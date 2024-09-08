@@ -1,14 +1,20 @@
 import type { Config } from "tailwindcss";
-const defaultTheme = require('tailwindcss/defaultTheme')
+const defaultTheme = require("tailwindcss/defaultTheme");
 
 const config: Config = {
-  darkMode: ["class"],
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    screens: {
+      sm: "640px",
+      md: "768px",
+      lg: "1024px",
+      // xl: "1280px",
+      // "2xl": "1536px",
+    },
     extend: {
       borderRadius: {
         lg: "var(--radius)",
@@ -18,7 +24,16 @@ const config: Config = {
       colors: {
         background: "hsl(from var(--background) h s l / <alpha-value>)",
         foreground: "hsl(from var(--foreground) h s l / <alpha-value>)",
-        primary: "hsl(from var(--primary) h s l / <alpha-value>)",
+        primary: {
+          DEFAULT: "hsl(from var(--primary) h s l / <alpha-value>)",
+          foreground:
+            "hsl(from var(--primary-foreground) h s l / <alpha-value>)",
+        },
+        secondary: {
+          DEFAULT: "hsl(from var(--secondary) h s l / <alpha-value>)",
+          foreground:
+            "hsl(from var(--secondary-foreground) h s l / <alpha-value>)",
+        },
         header: "hsl(from var(--header) h s l / <alpha-value>)",
         "header-lighter":
           "hsl(from var(--header-lighter) h s l / <alpha-value>)",
@@ -29,8 +44,8 @@ const config: Config = {
         border: "hsl(from var(--border) h s l / <alpha-value>)",
       },
       fontFamily: {
-		runescape: ['"RuneScape UF"', ...defaultTheme.fontFamily.mono],
-	  },
+        runescape: ['"RuneScape UF"', ...defaultTheme.fontFamily.mono],
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],
