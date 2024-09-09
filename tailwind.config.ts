@@ -44,7 +44,6 @@ const config: Config = {
         border: "hsl(from var(--border) h s l / <alpha-value>)",
       },
       fontFamily: {
-        // runescape: ['"RuneScape UF"', ...defaultTheme.fontFamily.mono],
         runescape: ['var(--font-runescape)', ...defaultTheme.fontFamily.mono],
       },
     },

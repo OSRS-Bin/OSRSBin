@@ -4,8 +4,7 @@ import { appName } from "@/lib/constants";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import localFont from 'next/font/local'
- 
-// Font files can be colocated inside of `app`
+
 const runescapeFont = localFont({
   src: './fonts/RuneScape-UF.woff2',
   display: 'swap',
