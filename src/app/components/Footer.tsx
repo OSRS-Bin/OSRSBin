@@ -7,7 +7,7 @@ const copyrightYear = new Date().getFullYear().toString();
 export default function Footer() {
   return (
     <footer className="mx-auto text-center mt-32 py-4">
-      <ul className="flex justify-center">
+      <ul className="flex justify-center flex-wrap">
         {siteAuthors.map((author, index) => (
           <React.Fragment key={author}>
             <li>{author}</li>
