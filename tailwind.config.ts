@@ -1,5 +1,6 @@
 import type { Config } from "tailwindcss";
-const defaultTheme = require("tailwindcss/defaultTheme");
+import defaultTheme from "tailwindcss/defaultTheme";
+import tailwindAnimate from "tailwindcss-animate";
 
 const config: Config = {
   content: [
@@ -34,6 +35,16 @@ const config: Config = {
           foreground:
             "hsl(from var(--secondary-foreground) h s l / <alpha-value>)",
         },
+        popover: {
+          DEFAULT: "hsl(from var(--popover) h s l / <alpha-value>)",
+          foreground:
+            "hsl(from var(--popover-foreground) h s l / <alpha-value>)",
+        },
+        accent: {
+          DEFAULT: "hsl(from var(--accent) h s l / <alpha-value>)",
+          foreground:
+            "hsl(from var(--accent-foreground) h s l / <alpha-value>)",
+        },
         header: "hsl(from var(--header) h s l / <alpha-value>)",
         "header-lighter":
           "hsl(from var(--header-lighter) h s l / <alpha-value>)",
@@ -44,10 +55,12 @@ const config: Config = {
         border: "hsl(from var(--border) h s l / <alpha-value>)",
       },
       fontFamily: {
-        runescape: ['var(--font-runescape)', ...defaultTheme.fontFamily.mono],
+        runescape: ["var(--font-runescape)", ...defaultTheme.fontFamily.mono],
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    tailwindAnimate,
+  ],
 };
 export default config;
