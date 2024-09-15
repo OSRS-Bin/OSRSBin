@@ -1,10 +1,8 @@
-"use client";
-
 import Link from "next/link";
 import { appName } from "@/lib/constants";
 import { type Tag } from "@/lib/types";
 import { tags } from "@/lib/data";
-import { usePathname } from "next/navigation";
+// import { usePathname } from "next/navigation";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -13,10 +11,13 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu";
+} from "@/components/NavigationMenu";
 import { cn } from "@/lib/utils";
 import * as React from "react";
 import { randomInteger } from "@/lib/utils";
+import { signOutAction } from "@/app/actions";
+import { Button } from "@/components/Button";
+import { createClient } from "@/lib/supabase/server";
 
 function findTagBySlug(slug: string): Tag {
   return tags.find((tag) => tag.slug === slug)!;
@@ -28,8 +29,12 @@ const headerTags = [
   findTagBySlug("misc"),
 ];
 
-export default function Header() {
-  const pathname = usePathname();
+export default async function Header() {
+  // const pathname = usePathname();
+  const {
+    data: { user },
+  } = await createClient().auth.getUser();
+
   return (
     <header className="font-runescape">
       <div className="bg-header">
@@ -41,9 +46,25 @@ export default function Header() {
             <li>
               <Link href="/help">Help</Link>
             </li>
-            <li>
-              <Link href="/logout">Logout</Link>
-            </li>
+            {user ? (
+              <div className="flex items-center gap-4">
+                Hey, {user.email}!
+                <form action={signOutAction}>
+                  <Button type="submit" variant={"outline"}>
+                    Sign out
+                  </Button>
+                </form>
+              </div>
+            ) : (
+              <div className="flex gap-2">
+                <Button asChild variant={"outline"}>
+                  <Link href="/sign-in">Sign in</Link>
+                </Button>
+                <Button asChild>
+                  <Link href="/sign-up">Sign up</Link>
+                </Button>
+              </div>
+            )}
           </ul>
         </nav>
       </div>

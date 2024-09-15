@@ -1,19 +1,24 @@
 import type { Metadata } from "next";
 import "./app.css";
 import { appName } from "@/lib/constants";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-import localFont from 'next/font/local'
+import Header from "./_components/Header";
+import Footer from "./_components/Footer";
+import localFont from "next/font/local";
+
+const defaultUrl = process.env.VERCEL_URL
+  ? `https://${process.env.VERCEL_URL}`
+  : "http://localhost:3000";
 
 const runescapeFont = localFont({
-  src: './fonts/RuneScape-UF.woff2',
-  display: 'swap',
-  weight: 'normal',
-  style: 'normal',
-  variable: '--font-runescape',
-})
+  src: "../fonts/RuneScape-UF.woff2",
+  display: "swap",
+  weight: "normal",
+  style: "normal",
+  variable: "--font-runescape",
+});
 
 export const metadata: Metadata = {
+  metadataBase: new URL(defaultUrl),
   title: appName,
   description: "OSRS Tile Packs for RuneLite...fill this in more",
 };
