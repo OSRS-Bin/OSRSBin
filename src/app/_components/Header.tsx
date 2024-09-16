@@ -34,6 +34,7 @@ export default async function Header() {
   const {
     data: { user },
   } = await createClient().auth.getUser();
+  let metadata = user?.user_metadata
 
   return (
     <header className="font-runescape">
@@ -48,7 +49,7 @@ export default async function Header() {
             </li>
             {user ? (
               <div className="flex items-center gap-4">
-                Hey, {user.email}!
+                Hey, {metadata?.username}!
                 <form action={signOutAction}>
                   <Button type="submit" variant={"outline"}>
                     Sign out
