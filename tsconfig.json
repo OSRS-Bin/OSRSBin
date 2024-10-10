@@ -7,6 +7,10 @@
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
+
+    // target was omitted in default config. if things break, remove this line
+    "target": "esnext",
+
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,

@@ -34,7 +34,7 @@ export default async function Header() {
   const {
     data: { user },
   } = await createClient().auth.getUser();
-  let metadata = user?.user_metadata
+  let metadata = user?.user_metadata;
 
   return (
     <header className="font-runescape">
@@ -73,7 +73,7 @@ export default async function Header() {
         <nav className="container mx-auto text-2xl px-8">
           <ul className="flex gap-4 items-center">
             <li className="uppercase px-12 py-1 border-primary border-2">
-              Upload
+              <Link href="/tilepacks/upload">Upload</Link>
             </li>
             <NavigationMenu>
               <NavigationMenuList>
