@@ -15,6 +15,10 @@ import {
 } from "@/components/Form";
 import { Textarea } from "@/components/Textarea";
 import { Input } from "@/components/Input";
+import { createClient } from "@/lib/supabase/server";
+
+// Create a single supabase client for interacting with your database
+const supabase = createClient();
 
 const formSchema = z.object({
   name: z.string().min(1).max(100),
@@ -33,7 +37,7 @@ const formSchema = z.object({
         });
         return z.NEVER;
       }
-        return parsed;
+      return parsed;
     })
     .refine((o) => tilePackTileSchema.safeParse(o).success === true, {
       message: "Invalid tile data",
@@ -84,12 +88,26 @@ export default function Upload() {
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: FormSchema) {
+  async function onSubmit(values: FormSchema) {
     const row = {
       ...values,
       slug: slugifyTitle(values.name),
     };
     console.log(row);
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    const author_id = user!.id;
+
+    const { error } = await supabase.from("tilepacks").insert({
+      author_id,
+      data: row.tiles,
+      description: row.description,
+      name: row.name,
+    });
+
+    console.log(error);
   }
 
   return (
@@ -103,7 +121,11 @@ export default function Upload() {
             <FormItem>
               <FormLabel>Title</FormLabel>
               <FormControl>
-                <Input placeholder="Enter a title" {...field} />
+                <Input
+                  placeholder="Enter a title"
+                  {...field}
+                  autoComplete="off"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
