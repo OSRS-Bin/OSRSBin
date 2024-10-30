@@ -3,12 +3,11 @@ import { FormMessage, Message } from "@/components/FormMessage";
 import { SubmitButton } from "@/components/SubmitButton";
 import { Input } from "@/components/ui/input";
 
-export default async function ResetPassword(
-  props: {
-    searchParams: Promise<Message>;
-  }
-) {
-  const searchParams = await props.searchParams;
+export default async function ResetPassword({
+  searchParams,
+}: {
+  searchParams: Message;
+}) {
   return (
     <form className="flex flex-col w-full max-w-md p-4 gap-2 [&>input]:mb-4">
       <h1 className="text-2xl font-medium">Reset password</h1>
