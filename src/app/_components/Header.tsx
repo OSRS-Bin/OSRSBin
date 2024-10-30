@@ -33,7 +33,7 @@ export default async function Header() {
   // const pathname = usePathname();
   const {
     data: { user },
-  } = await (await createClient()).auth.getUser();
+  } = await createClient().auth.getUser();
   let metadata = user?.user_metadata;
 
   return (

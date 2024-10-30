@@ -18,7 +18,7 @@ import { Input } from "@/components/Input";
 import { createClient } from "@/lib/supabase/server";
 
 // Create a single supabase client for interacting with your database
-// const supabase = createClient();
+const supabase = createClient();
 
 const formSchema = z.object({
   name: z.string().min(1).max(100),
@@ -89,7 +89,6 @@ export default function Upload() {
 
   // 2. Define a submit handler.
   async function onSubmit(values: FormSchema) {
-    const supabase = await createClient();
     const row = {
       ...values,
       slug: slugifyTitle(values.name),
