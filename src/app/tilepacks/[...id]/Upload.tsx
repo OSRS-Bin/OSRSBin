@@ -15,12 +15,9 @@ import {
 } from "@/components/Form";
 import { Textarea } from "@/components/Textarea";
 import { Input } from "@/components/Input";
-import { createClient } from "@/lib/supabase/server";
+import { uploadTilepack } from "./actions";
 
-// Create a single supabase client for interacting with your database
-const supabase = createClient();
-
-const formSchema = z.object({
+const uploadFormSchema = z.object({
   name: z.string().min(1).max(100),
   description: z.string().min(10).max(5000),
   tiles: z
@@ -44,7 +41,7 @@ const formSchema = z.object({
     }),
 });
 
-type FormSchema = z.infer<typeof formSchema>;
+export type UploadFormSchema = z.infer<typeof uploadFormSchema>;
 
 const tilePackTileSchema = z
   .array(
@@ -79,41 +76,23 @@ function slugifyTitle(title: string) {
 
 export default function Upload() {
   // 1. Define your form.
-  const form = useForm<FormSchema>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<UploadFormSchema>({
+    resolver: zodResolver(uploadFormSchema),
     defaultValues: {
       name: "",
       description: "",
     },
   });
 
-  // 2. Define a submit handler.
-  async function onSubmit(values: FormSchema) {
-    const row = {
-      ...values,
-      slug: slugifyTitle(values.name),
-    };
-    console.log(row);
-
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    const author_id = user!.id;
-
-    const { error } = await supabase.from("tilepacks").insert({
-      author_id,
-      data: row.tiles,
-      description: row.description,
-      name: row.name,
-    });
-
-    console.log(error);
-  }
-
   return (
     <Form {...form}>
       <h1 className="font-runescape text-6xl text-primary">Upload Tilepack</h1>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form
+        onSubmit={form.handleSubmit((values) =>
+          uploadTilepack(JSON.stringify(values))
+        )}
+        className="space-y-8"
+      >
         <FormField
           control={form.control}
           name="name"
