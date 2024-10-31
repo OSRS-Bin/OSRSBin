@@ -60,21 +60,6 @@ const tilePackTileSchema = z
   .min(1)
   .max(200);
 
-function slugifyTitle(title: string) {
-  let slugged = title
-    .trim()
-    .toLowerCase()
-    .replace("'", "")
-    .replace(/[\p{P}\W]+/gu, "-");
-  if (slugged.startsWith("-")) {
-    slugged = slugged.slice(1);
-  }
-  if (slugged.endsWith("-")) {
-    slugged = slugged.slice(0, -1);
-  }
-  return slugged;
-}
-
 export default function Upload() {
   // 1. Define your form.
   const form = useForm<UploadFormSchema>({
