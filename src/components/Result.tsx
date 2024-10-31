@@ -60,7 +60,7 @@ export default function Result({
           </li>
           <li>123 installs</li>
         </ul>
-        <p className="h-full">{tilePack.description}</p>
+        <p className="h-full line-clamp-3">{tilePack.description}</p>
         <ul className="flex gap-2 flex-wrap">
           {fakeTags.slice(0,3).map((tag) => (
             <li key={tag.name}>
