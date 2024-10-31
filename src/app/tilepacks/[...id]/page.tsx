@@ -1,6 +1,6 @@
 import TilePack from "./View";
 import Upload from "./Upload";
-import { createClient } from "@/lib/supabase/client";
+import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 
 export default async function ViewOrUpload({
@@ -12,9 +12,11 @@ export default async function ViewOrUpload({
 
   if (id === "upload") {
     const supabase = createClient();
+    // const {
+    //   data: { user },
+    //   error,
+    // } = await supabase.auth.getUser();
     const { data, error } = await supabase.auth.getUser();
-    console.log("data", data);
-    console.log("error", error);
 
     if (error || !data) {
       redirect("/sign-in");

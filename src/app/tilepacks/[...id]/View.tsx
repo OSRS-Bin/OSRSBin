@@ -1,16 +1,36 @@
-import { tilePacks } from "@/lib/data";
+"use server";
+
+
 import { notFound } from "next/navigation";
 import { formatNumber } from "@/lib/utils";
 import TagBadge from "@/components/TagBadge";
 import { faker } from "@faker-js/faker";
 import CopyButton from "./CopyButton";
+import { createClient } from "@/lib/supabase/server";
 
-function getTilePackWithId(id: string) {
-  return tilePacks.find((tilePack) => tilePack.id === id);
+async function getTilePackWithId(id: string) {
+  const supabase = createClient();
+  let { data: tilepacks, error } = await supabase
+    .from("tilepacks")
+    .select("*")
+    .eq("public_id", id);
+  if (error || !tilepacks || tilepacks.length === 0) {
+    return null;
+  }
+  return tilepacks[0];
 }
 
-export default function TilePack({ id }: { id: string }) {
-  const tilePack = getTilePackWithId(id);
+const fakeTags = [
+  { name: "PvM", slug: "pvm" },
+  { name: "Skilling", slug: "skilling" },
+  { name: "Colusseum", slug: "colusseum" },
+  { name: "Minigame", slug: "minigame" },
+  { name: "Quest", slug: "quest" },
+  { name: "Misc", slug: "misc" },
+]
+
+export default async function TilePack({ id }: { id: string }) {
+  const tilePack = await getTilePackWithId(id);
 
   if (!tilePack) {
     notFound();
@@ -21,16 +41,17 @@ export default function TilePack({ id }: { id: string }) {
       <h1 className="font-runescape text-6xl text-primary">{tilePack.name}</h1>
 
       <h2 className="sr-only">Data</h2>
-      <CopyButton text={tilePack.tiles}>
+      <CopyButton text={tilePack.data}>
         Copy &quot;{tilePack.name}&quot; to Clipboard
       </CopyButton>
+      {/*hello*/}
       <details className="cursor-pointer">
         <summary className="font-runescape text-2xl">Data</summary>
         <textarea
-          value={tilePack.tiles}
+          value={JSON.stringify(JSON.parse(tilePack.data), undefined, 2)}
           rows={5}
           readOnly
-          className="w-full h-64 text-black font-mono rounded-lg"
+          className="w-full h-64 font-mono rounded-lg p-6 bg-card text-card-foreground "
         />
       </details>
 
@@ -38,19 +59,22 @@ export default function TilePack({ id }: { id: string }) {
       <ul>
         <li>
           <span className="font-runescape text-2xl">Author</span>:{" "}
-          {tilePack.author.name}
+          {tilePack.author_id}
         </li>
         <li>
           <span className="font-runescape text-2xl">Installs</span>:{" "}
-          {formatNumber(tilePack.installCount)}
+          {/* {formatNumber(tilePack.installCount)} */}
+          123
         </li>
         <li>
           <span className="font-runescape text-2xl">Views</span>:{" "}
-          {formatNumber(tilePack.viewCount)}
+          {/* {formatNumber(tilePack.viewCount)} */}
+          234
         </li>
         <li>
           <span className="font-runescape text-2xl">Favorites</span>:{" "}
-          {formatNumber(tilePack.favoriteCount)}
+          {/* {formatNumber(tilePack.favoriteCount)} */}
+          345
         </li>
       </ul>
 
@@ -60,14 +84,14 @@ export default function TilePack({ id }: { id: string }) {
       </p>
 
       <img
-        src={tilePack.imageHref}
+        src="https://loremflickr.com/640/480"
         alt={tilePack.name}
         className="w-full h-auto"
       />
 
       <h2 className="sr-only">Tags</h2>
       <ul className="flex gap-2">
-        {tilePack.tags.map((tag) => (
+        {fakeTags.map((tag) => (
           <li key={tag.name}>
             <TagBadge tag={tag} />
           </li>
@@ -76,7 +100,7 @@ export default function TilePack({ id }: { id: string }) {
 
       <h2 className="text-4xl font-runescape">Comments</h2>
       <ul className="grid grid-flow-row gap-4">
-        {Array.from({ length: tilePack.commentCount }).map((_, i) => (
+        {Array.from({ length: 5 }).map((_, i) => (
           <li key={i} className="bg-card text-card-foreground p-4 rounded-lg">
             <p className="font-runescape text-xl">
               {faker.internet.userName()}
