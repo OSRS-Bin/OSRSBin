@@ -1,4 +1,3 @@
-import { tilePacks } from "@/lib/data";
 import ResultList from "@/components/ResultList";
 
 export default function TilePacks() {

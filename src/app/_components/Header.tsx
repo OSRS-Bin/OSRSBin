@@ -1,7 +1,5 @@
 import Link from "next/link";
 import { appName } from "@/lib/constants";
-import { type Tag } from "@/lib/types";
-import { tags } from "@/lib/data";
 // import { usePathname } from "next/navigation";
 import {
   NavigationMenu,
@@ -18,9 +16,21 @@ import { randomInteger } from "@/lib/utils";
 import { signOutAction } from "@/app/actions";
 import { Button } from "@/components/Button";
 import { createClient } from "@/lib/supabase/server";
+import { type Tables } from "@/lib/types";
 
-function findTagBySlug(slug: string): Tag {
-  return tags.find((tag) => tag.slug === slug)!;
+async function findTagBySlug(slug: string): Promise<Tables<"tags"> | null> {
+  const supabase = createClient();
+  let { data: tags, error } = await supabase
+    .from("tags")
+    .select("*")
+    .eq("slug", slug);
+
+  if (error) {
+    console.error(error);
+    throw error;
+  }
+
+  return tags?.[0] ?? null;
 }
 
 const headerTags = [

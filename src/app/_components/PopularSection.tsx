@@ -1,14 +1,15 @@
 "use server";
 
-import { tilePacks } from "@/lib/data";
+// import { tilePacks } from "@/lib/data";
 import Result from "@/components/Result";
 import { createClient } from "@/lib/supabase/server";
 
-// const popularTilePacks = tilePacks.slice(0, 3);
-
 export default async function PopularSection() {
   const supabase = createClient();
-  let { data: tilepacks, error } = await supabase.from("tilepacks").select("*").limit(3);
+  let { data: tilepacks, error } = await supabase
+    .from("tilepacks")
+    .select("*")
+    .limit(3);
   if (error || !tilepacks) {
     return null;
   }
