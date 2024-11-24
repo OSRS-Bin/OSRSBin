@@ -7,7 +7,8 @@ function tilePacksWithTag(tag: Tag) {
   return tilePacks.filter((tilePack) => tilePack.tags.includes(tag));
 }
 
-export default function Tag({ params }: { params: { tag: string } }) {
+export default async function Tag(props: { params: Promise<{ tag: string }> }) {
+  const params = await props.params;
   const tag = tags.find((tag) => tag.slug === params.tag);
 
   if (!tag) {

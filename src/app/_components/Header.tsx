@@ -31,9 +31,10 @@ const headerTags = [
 
 export default async function Header() {
   // const pathname = usePathname();
+  const supabase = await createClient();
   const {
     data: { user },
-  } = await createClient().auth.getUser();
+  } = await supabase.auth.getUser();
   let metadata = user?.user_metadata;
 
   return (

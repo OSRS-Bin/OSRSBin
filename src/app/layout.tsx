@@ -12,7 +12,6 @@ const defaultUrl = process.env.VERCEL_URL
 const runescapeFont = localFont({
   src: "../fonts/RuneScape-UF.woff2",
   display: "swap",
-  weight: "normal",
   style: "normal",
   variable: "--font-runescape",
 });

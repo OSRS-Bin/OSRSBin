@@ -4,7 +4,8 @@ import { SubmitButton } from "@/components/SubmitButton";
 import { Input } from "@/components/Input";
 import Link from "next/link";
 
-export default function Login({ searchParams }: { searchParams: Message }) {
+export default async function Login(props: { searchParams: Promise<Message> }) {
+  const searchParams = await props.searchParams;
   return (
     <form className="flex-1 flex flex-col min-w-64 mx-auto">
       <h1 className="text-2xl font-medium">Sign in</h1>

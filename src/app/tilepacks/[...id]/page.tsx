@@ -1,7 +1,8 @@
 import TilePack from "./View";
 import Upload from "./Upload";
 
-export default function ViewOrUpload({ params }: { params: { id: string[] } }) {
+export default async function ViewOrUpload(props: { params: Promise<{ id: string[] }> }) {
+  const params = await props.params;
   const id = params.id[0];
 
   if (id === 'upload') {
