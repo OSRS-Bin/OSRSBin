@@ -2,7 +2,6 @@ import Link from "next/link";
 import { appName } from "@/lib/constants";
 import { type Tag } from "@/lib/types";
 import { tags } from "@/lib/data";
-import { type Tables } from "@/lib/types";
 // import { usePathname } from "next/navigation";
 import {
   NavigationMenu,

@@ -7,7 +7,7 @@ import { createClient } from "@/lib/supabase/server";
 // const popularTilePacks = tilePacks.slice(0, 3);
 
 export default async function PopularSection() {
-  const supabase = createClient();
+  const supabase = await createClient();
   let { data: tilepacks, error } = await supabase.from("tilepacks").select("*").limit(3);
   if (error || !tilepacks) {
     return null;

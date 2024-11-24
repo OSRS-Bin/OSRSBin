@@ -11,11 +11,7 @@ export default async function ViewOrUpload({
   const id = params.id[0];
 
   if (id === "upload") {
-    const supabase = createClient();
-    // const {
-    //   data: { user },
-    //   error,
-    // } = await supabase.auth.getUser();
+    const supabase = await createClient();
     const { data, error } = await supabase.auth.getUser();
 
     if (error || !data) {

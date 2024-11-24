@@ -1,7 +1,7 @@
-import { type TilePack } from "@/lib/types";
+import { type Tilepack } from "@/lib/types";
 import Result from "./Result";
 
-export default function Results({ tilePacks }: { tilePacks: TilePack[] }) {
+export default function Results({ tilePacks }: { tilePacks: Tilepack[] }) {
   if (tilePacks.length === 0) {
     return <p>No tile packs found.</p>;
   }

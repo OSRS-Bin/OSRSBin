@@ -33,11 +33,12 @@ const formSchema = z.object({
         });
         return z.NEVER;
       }
-        return parsed;
+      return parsed;
     })
     .refine((o) => tilePackTileSchema.safeParse(o).success === true, {
       message: "Invalid tile data",
     }),
+  image: z.instanceof(File),
 });
 
 export type UploadFormSchema = z.infer<typeof formSchema>;

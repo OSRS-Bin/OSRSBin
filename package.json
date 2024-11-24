@@ -4,10 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "gen-db-types": "supabase gen types --lang typescript --linked"
   },
   "dependencies": {
     "@faker-js/faker": "^9.0.0",

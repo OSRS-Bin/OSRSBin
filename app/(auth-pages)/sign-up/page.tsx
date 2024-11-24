@@ -23,7 +23,7 @@ export default function Signup({ searchParams }: { searchParams: Message }) {
             Sign in
           </Link>
         </p>
-        
+
         <div className="flex flex-col gap-2 [&>input]:mb-3 mt-8">
           <label htmlFor="email">Email</label>
           <Input name="email" placeholder="you@example.com" required />

@@ -2,7 +2,7 @@
  * Fake site data. Will be replaced by a database sometime soon.
  */
 
-import { type User, type Tag, type TilePack } from "./types";
+import { type User, type Tag, type Tilepack } from "./types";
 import { randomInteger } from "./utils";
 
 function createUser(id: string, name: string, avatarHref: string): User {
@@ -75,7 +75,7 @@ function createTilePack(
   description: string,
   author: User,
   tags: Tag[]
-): TilePack {
+): Tilepack {
   return {
     id,
     slug: name.toLowerCase().replace(/\W+/, "-"),
@@ -93,7 +93,7 @@ function createTilePack(
   };
 }
 
-export const tilePacks: TilePack[] = [
+export const tilePacks: Tilepack[] = [
   createTilePack(
     "1",
     "Wholesome Reminders",

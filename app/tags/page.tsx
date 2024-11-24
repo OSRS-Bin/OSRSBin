@@ -1,31 +1,44 @@
-import { tilePacks } from "@/lib/data";
-import { Tag } from "@/lib/types";
+import { notFound } from "next/navigation";
 import Link from "next/link";
 import React from "react";
 import { formatNumber } from "@/lib/utils";
+import { createClient } from "@/lib/supabase/server";
 
-const tags: Map<Tag, number> = tilePacks.reduce((acc, tilePack) => {
-  for (const tag of tilePack.tags) {
-    if (acc.has(tag)) {
-      acc.set(tag, acc.get(tag) + 1);
-    } else {
-      acc.set(tag, 1);
-    }
+export default async function Tags() {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from("tags")
+    .select(`*, tilepacks(count)`);
+
+  // this filter isn't working, so we do it in JS
+  // .order("count", { referencedTable: "tilepacks", ascending: false });
+
+  if (error) {
+    throw error;
   }
-  return acc;
-}, new Map());
 
-export default function Tags() {
+  if (!data) {
+    notFound();
+  }
+
+  const tags = data.sort((a, b) => b.tilepacks[0].count - a.tilepacks[0].count);
+
   return (
     <div>
       <h1 className="font-runescape text-6xl text-primary">Tags</h1>
       <ul className="list-disc list-inside">
-        {Array.from(tags.entries()).map(([tag, count]) => (
-          <li key={tag.name}>
-            <Link href={`tags/${tag.slug}`} className="underline hover:text-foreground/80">
+        {Array.from(tags).map((tag) => (
+          <li key={tag.id}>
+            <Link
+              href={`tags/${tag.slug}`}
+              className="underline hover:text-foreground/80"
+            >
               {tag.name}
             </Link>
-            <span className="italic ms-2">({formatNumber(count)} packs)</span>
+            <span className="italic ms-2">
+              ({formatNumber(tag.tilepacks[0].count)} packs)
+            </span>
           </li>
         ))}
       </ul>
