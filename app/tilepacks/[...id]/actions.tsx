@@ -3,8 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { generateNewId } from "@/lib/utils";
 import { redirect } from "next/navigation";
-
-const bucketName = "tilepack-images";
+import { tilepackImagesBucketName} from "@/lib/constants";
 
 function slugifyTitle(title: string) {
   let slugged = title
@@ -37,7 +36,7 @@ export async function uploadTilepack(formData: FormData) {
 
   const imagePath = `${generateNewId()}-${image.name}`;
   const { data: imageData, error: uploadError } = await supabase.storage
-    .from(bucketName)
+    .from(tilepackImagesBucketName)
     .upload(imagePath, image);
   console.log("imageData", imageData);
   // TODO: save imageData.id to the tilepack column. remove image_url, we can just join on the storage table
@@ -48,7 +47,7 @@ export async function uploadTilepack(formData: FormData) {
 
   const {
     data: { publicUrl: imageURL },
-  } = supabase.storage.from(bucketName).getPublicUrl(imagePath);
+  } = supabase.storage.from(tilepackImagesBucketName).getPublicUrl(imagePath);
   console.log(imageURL);
 
   const row = {

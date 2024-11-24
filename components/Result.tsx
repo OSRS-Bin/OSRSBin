@@ -1,14 +1,15 @@
-import { formatNumber } from "@/lib/utils";
 import TagBadge from "./TagBadge";
 import Link from "next/link";
-import { type Database } from "@/lib/types";
+import { type Tilepack } from "@/lib/types";
 
 type Orientation = "horizontal" | "vertical";
-type TilePack = Database["public"]["Tables"]["tilepacks"]["Row"];
 
-function tilePackLink(tilePack: TilePack, children: React.ReactNode) {
+function tilePackLink(tilePack: Tilepack, children: React.ReactNode) {
   return (
-    <Link href={`/tilepacks/${tilePack.public_id}/${tilePack.slug}`} className="">
+    <Link
+      href={`/tilepacks/${tilePack.public_id}/${tilePack.slug}`}
+      className=""
+    >
       {children}
     </Link>
   );
@@ -27,7 +28,7 @@ export default function Result({
   tilePack,
   orientation = "horizontal",
 }: {
-  tilePack: Database["public"]["Tables"]["tilepacks"]["Row"];
+  tilePack: Tilepack;
   orientation?: Orientation;
 }) {
   return (
@@ -62,7 +63,7 @@ export default function Result({
         </ul>
         <p className="h-full line-clamp-3">{tilePack.description}</p>
         <ul className="flex gap-2 flex-wrap">
-          {fakeTags.slice(0,3).map((tag) => (
+          {fakeTags.slice(0, 3).map((tag) => (
             <li key={tag.name}>
               <TagBadge tag={tag} />
             </li>

@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { appName } from "@/lib/constants";
-import { type Tables, type Tag } from "@/lib/types";
-import { tags } from "@/lib/data";
+import { type Tag } from "@/lib/types";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -16,19 +15,9 @@ import * as React from "react";
 import { signOutAction } from "@/app/actions";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
-
-function findTagBySlug(slug: string): Tag {
-  return tags.find((tag) => tag.slug === slug)!;
-}
+import Logo from "@/components/Logo";
 
 export default async function Header() {
-  const headerTags = [
-    findTagBySlug("pvm"),
-    findTagBySlug("skilling"),
-    findTagBySlug("misc"),
-  ];
-
-  // const pathname = usePathname();
   const supabase = await createClient();
   const {
     data: { user },
@@ -43,10 +32,7 @@ export default async function Header() {
   }
 
   const parentTags = tags.filter((tag) => tag.parent_id === null);
-  type TagMap = Map<
-    number,
-    { tag: Tables<"tags">; children: Tables<"tags">[] }
-  >;
+  type TagMap = Map<number, { tag: Tag; children: Tag[] }>;
   const tagMap: TagMap = new Map(
     parentTags.map((tag) => [tag.id, { tag, children: [] }])
   );
@@ -61,7 +47,10 @@ export default async function Header() {
       <div className="bg-header">
         <nav className="flex justify-between items-center py-2 container mx-auto px-8">
           <div className="text-4xl font-runescape">
-            <Link href="/">{appName}</Link>
+            <Link href="/" className="flex gap-4 items-center">
+              <Logo className="size-12" />
+              <span>{appName}</span>
+            </Link>
           </div>
           <ul className="flex gap-8 text-3xl text-primary">
             <li>

@@ -1,11 +1,10 @@
 "use server";
 
-
 import { notFound } from "next/navigation";
 import TagBadge from "@/components/TagBadge";
-import { faker } from "@faker-js/faker";
 import CopyButton from "./CopyButton";
 import { createClient } from "@/lib/supabase/server";
+import { randomInteger, formatNumber } from "@/lib/utils";
 
 async function getTilePackWithId(id: string) {
   const supabase = await createClient();
@@ -26,10 +25,14 @@ const fakeTags = [
   { name: "Minigame", slug: "minigame" },
   { name: "Quest", slug: "quest" },
   { name: "Misc", slug: "misc" },
-]
+];
 
 export default async function TilePack({ id }: { id: string }) {
   const tilePack = await getTilePackWithId(id);
+
+  const [installCount, viewCount, favoriteCount] = Array.from({
+    length: 3,
+  }).map(() => randomInteger(1000, 10000));
 
   if (!tilePack) {
     notFound();
@@ -62,18 +65,15 @@ export default async function TilePack({ id }: { id: string }) {
         </li>
         <li>
           <span className="font-runescape text-2xl">Installs</span>:{" "}
-          {/* {formatNumber(tilePack.installCount)} */}
-          123
+          {formatNumber(installCount)}
         </li>
         <li>
           <span className="font-runescape text-2xl">Views</span>:{" "}
-          {/* {formatNumber(tilePack.viewCount)} */}
-          234
+          {formatNumber(viewCount)}
         </li>
         <li>
           <span className="font-runescape text-2xl">Favorites</span>:{" "}
-          {/* {formatNumber(tilePack.favoriteCount)} */}
-          345
+          {formatNumber(favoriteCount)}
         </li>
       </ul>
 
@@ -97,7 +97,8 @@ export default async function TilePack({ id }: { id: string }) {
         ))}
       </ul>
 
-      <h2 className="text-4xl font-runescape">Comments</h2>
+      {/* Don't need this for MVP. Consider if the value to users is worth the cost moderation efforts and/or money */}
+      {/* <h2 className="text-4xl font-runescape">Comments</h2>
       <ul className="grid grid-flow-row gap-4">
         {Array.from({ length: 5 }).map((_, i) => (
           <li key={i} className="bg-card text-card-foreground p-4 rounded-lg">
@@ -107,7 +108,7 @@ export default async function TilePack({ id }: { id: string }) {
             <p>{faker.lorem.sentences(3)}</p>
           </li>
         ))}
-      </ul>
+      </ul> */}
     </div>
   );
 }

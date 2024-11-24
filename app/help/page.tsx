@@ -1,7 +1,7 @@
 import React from "react";
 import { faker } from "@faker-js/faker";
 
-export default function FAQ() {
+export default function Help() {
   return (
     <div>
       <h1 className="text-6xl font-runescape text-primary">Help</h1>
