@@ -1,6 +1,6 @@
 "use server";
 
-import type { UploadFormSchema } from "./Upload";
+import { type UploadFormSchema } from "./Upload";
 import { createClient } from "@/lib/supabase/server";
 import { customAlphabet } from "nanoid";
 import { redirect } from "next/navigation";
@@ -28,7 +28,7 @@ const generateNewId = customAlphabet(idAlphabet, defaultIdLength);
 
 export async function uploadTilepack(json: string) {
   const values: UploadFormSchema = JSON.parse(json);
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const { data, error: getUserError } = await supabase.auth.getUser();
   if (getUserError || !data?.user) {

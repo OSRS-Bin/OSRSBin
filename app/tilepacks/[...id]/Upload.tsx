@@ -40,7 +40,7 @@ const formSchema = z.object({
     }),
 });
 
-type FormSchema = z.infer<typeof formSchema>;
+export type UploadFormSchema = z.infer<typeof formSchema>;
 
 const tilePackTileSchema = z
   .array(
@@ -75,7 +75,7 @@ function slugifyTitle(title: string) {
 
 export default function Upload() {
   // 1. Define your form.
-  const form = useForm<FormSchema>({
+  const form = useForm<UploadFormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
@@ -84,7 +84,7 @@ export default function Upload() {
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: FormSchema) {
+  function onSubmit(values: UploadFormSchema) {
     const row = {
       ...values,
       slug: slugifyTitle(values.name),
