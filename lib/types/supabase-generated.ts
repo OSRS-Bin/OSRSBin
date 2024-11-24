@@ -7,48 +7,23 @@ export type Json =
   | Json[]
 
 export type Database = {
-  graphql_public: {
-    Tables: {
-      [_ in never]: never
-    }
-    Views: {
-      [_ in never]: never
-    }
-    Functions: {
-      graphql: {
-        Args: {
-          operationName?: string
-          query?: string
-          variables?: Json
-          extensions?: Json
-        }
-        Returns: Json
-      }
-    }
-    Enums: {
-      [_ in never]: never
-    }
-    CompositeTypes: {
-      [_ in never]: never
-    }
-  }
   public: {
     Tables: {
       profiles: {
         Row: {
           created_at: string
+          display_name: string
           id: string
-          name: string
         }
         Insert: {
           created_at?: string
-          id?: string
-          name: string
+          display_name: string
+          id: string
         }
         Update: {
           created_at?: string
+          display_name?: string
           id?: string
-          name?: string
         }
         Relationships: []
       }
@@ -92,6 +67,7 @@ export type Database = {
           description: string
           id: number
           image_id: string | null
+          image_url: string | null
           name: string
           public_id: string
           slug: string
@@ -103,6 +79,7 @@ export type Database = {
           description: string
           id?: number
           image_id?: string | null
+          image_url?: string | null
           name: string
           public_id: string
           slug: string
@@ -114,6 +91,7 @@ export type Database = {
           description?: string
           id?: number
           image_id?: string | null
+          image_url?: string | null
           name?: string
           public_id?: string
           slug?: string
@@ -146,14 +124,14 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "tilepack_tags_tag_id_fkey"
+            foreignKeyName: "tilepacks_tags_tag_id_fkey"
             columns: ["tag_id"]
             isOneToOne: false
             referencedRelation: "tags"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "tilepack_tags_tilepack_id_fkey"
+            foreignKeyName: "tilepacks_tags_tilepack_id_fkey"
             columns: ["tilepack_id"]
             isOneToOne: false
             referencedRelation: "tilepacks"
