@@ -1,4 +1,5 @@
 // script to generate types with the database
+// run with `npm run gen-db-types`
 //
 // steps:
 // 1. load environment files with dotenv for the SUPABASE_PERSONAL_ACCESS_TOKEN and
@@ -15,18 +16,13 @@ import { config } from "dotenv";
 import fetch from "node-fetch";
 import { createInterface } from "readline";
 
-// Define the expected response shape
-type SupabaseTypesResponse = {
-  types: string;
-};
-
 async function generateTypes() {
   // try both
   config();
   config({
     path: resolve(process.cwd(), ".env.local"),
   })
-  
+
   const personalAccessToken = process.env.SUPABASE_PERSONAL_ACCESS_TOKEN;
   const projectId = process.env.SUPABASE_PROJECT_ID;
 
@@ -81,6 +77,11 @@ async function generateTypes() {
     }
 
     const data = (await response.json()) as unknown;
+
+    // Define the expected response shape
+    type SupabaseTypesResponse = {
+      types: string;
+    };
 
     // Type guard to verify the response shape
     function isSupabaseTypesResponse(
