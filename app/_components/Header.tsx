@@ -31,7 +31,6 @@ export default async function Header() {
     findTagBySlug("misc"),
   ];
 
-  const supabase = createClient();
   // const pathname = usePathname();
   const supabase = await createClient();
   const {

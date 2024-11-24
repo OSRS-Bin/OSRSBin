@@ -15,10 +15,8 @@ import {
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
-import { uploadTilepack } from "./actions";
-import { createClient } from "@/lib/supabase/server";
 
-const uploadFormSchema = z.object({
+const formSchema = z.object({
   name: z.string().min(1).max(100),
   description: z.string().min(10).max(5000),
   tiles: z
@@ -35,14 +33,14 @@ const uploadFormSchema = z.object({
         });
         return z.NEVER;
       }
-      return parsed;
+        return parsed;
     })
     .refine((o) => tilePackTileSchema.safeParse(o).success === true, {
       message: "Invalid tile data",
     }),
 });
 
-export type UploadFormSchema = z.infer<typeof uploadFormSchema>;
+export type UploadFormSchema = z.infer<typeof formSchema>;
 
 const tilePackTileSchema = z
   .array(
@@ -60,25 +58,44 @@ const tilePackTileSchema = z
   .min(1)
   .max(200);
 
+function slugifyTitle(title: string) {
+  let slugged = title
+    .trim()
+    .toLowerCase()
+    .replace("'", "")
+    .replace(/[\p{P}\W]+/gu, "-");
+  if (slugged.startsWith("-")) {
+    slugged = slugged.slice(1);
+  }
+  if (slugged.endsWith("-")) {
+    slugged = slugged.slice(0, -1);
+  }
+  return slugged;
+}
+
 export default function Upload() {
   // 1. Define your form.
   const form = useForm<UploadFormSchema>({
-    resolver: zodResolver(uploadFormSchema),
+    resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
       description: "",
     },
   });
 
+  // 2. Define a submit handler.
+  function onSubmit(values: UploadFormSchema) {
+    const row = {
+      ...values,
+      slug: slugifyTitle(values.name),
+    };
+    console.log(row);
+  }
+
   return (
     <Form {...form}>
       <h1 className="font-runescape text-6xl text-primary">Upload Tilepack</h1>
-      <form
-        onSubmit={form.handleSubmit((values) =>
-          uploadTilepack(JSON.stringify(values))
-        )}
-        className="space-y-8"
-      >
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
           name="name"
@@ -86,11 +103,7 @@ export default function Upload() {
             <FormItem>
               <FormLabel>Title</FormLabel>
               <FormControl>
-                <Input
-                  placeholder="Enter a title"
-                  {...field}
-                  autoComplete="off"
-                />
+                <Input placeholder="Enter a title" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
