@@ -2,7 +2,6 @@
 
 
 import { notFound } from "next/navigation";
-import { formatNumber } from "@/lib/utils";
 import TagBadge from "@/components/TagBadge";
 import { faker } from "@faker-js/faker";
 import CopyButton from "./CopyButton";
@@ -36,6 +35,7 @@ export default async function TilePack({ id }: { id: string }) {
     notFound();
   }
 
+  // TODO load image from storage, load tags from tags table, etc
   return (
     <div className="grid grid-flow-row gap-4">
       <h1 className="font-runescape text-6xl text-primary">{tilePack.name}</h1>
@@ -83,7 +83,7 @@ export default async function TilePack({ id }: { id: string }) {
       </p>
 
       <img
-        src="https://loremflickr.com/640/480"
+        src={tilePack.image_url || "https://loremflickr.com/640/480"}
         alt={tilePack.name}
         className="w-full h-auto"
       />

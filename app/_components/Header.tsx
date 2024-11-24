@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { appName } from "@/lib/constants";
-import { type Tag } from "@/lib/types";
+import { type Tables, type Tag } from "@/lib/types";
 import { tags } from "@/lib/data";
-// import { usePathname } from "next/navigation";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -11,10 +10,9 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu"
+} from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
 import * as React from "react";
-import { randomInteger } from "@/lib/utils";
 import { signOutAction } from "@/app/actions";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
@@ -45,9 +43,10 @@ export default async function Header() {
   }
 
   const parentTags = tags.filter((tag) => tag.parent_id === null);
-  const parentIds = new Set(parentTags.map((tag) => tag.id));
-  // const childTags = tags.filter((tag) =>  tag.parent_id != null  && parentIds.has(tag.parent_id));
-  type TagMap = Map<number, { tag: Tables<"tags">, children: Tables<"tags">[] }>;
+  type TagMap = Map<
+    number,
+    { tag: Tables<"tags">; children: Tables<"tags">[] }
+  >;
   const tagMap: TagMap = new Map(
     parentTags.map((tag) => [tag.id, { tag, children: [] }])
   );
@@ -56,7 +55,6 @@ export default async function Header() {
       tagMap.get(tag.parent_id)?.children.push(tag);
     }
   });
-  
 
   return (
     <header className="font-runescape">
@@ -71,7 +69,7 @@ export default async function Header() {
             </li>
             {user ? (
               <div className="flex items-center gap-4">
-                Hey, {metadata?.username}!
+                Hey, {metadata?.displayName}!
                 <form action={signOutAction}>
                   <Button type="submit" variant={"outline"}>
                     Sign out
@@ -101,18 +99,18 @@ export default async function Header() {
               <NavigationMenuList>
                 {[...tagMap.values()].map((bucket) => (
                   <NavigationMenuItem key={bucket.tag.id}>
-                    <NavigationMenuTrigger>{bucket.tag.name}</NavigationMenuTrigger>
+                    <NavigationMenuTrigger>
+                      {bucket.tag.name}
+                    </NavigationMenuTrigger>
                     <NavigationMenuContent>
                       <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-                        {bucket.children.map(
-                          (child, i) => (
-                            <ListItem
-                              key={i}
-                              title={`${child.name}`}
-                              href={`/tags/${child.slug}`}
-                            />
-                          )
-                        )}
+                        {bucket.children.map((child, i) => (
+                          <ListItem
+                            key={i}
+                            title={`${child.name}`}
+                            href={`/tags/${child.slug}`}
+                          />
+                        ))}
                       </ul>
                     </NavigationMenuContent>
                   </NavigationMenuItem>

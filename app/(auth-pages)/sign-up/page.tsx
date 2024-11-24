@@ -31,10 +31,10 @@ export default async function Signup(props: {
           <label htmlFor="email">Email</label>
           <Input name="email" placeholder="you@example.com" required />
 
-          <label htmlFor="username">Username</label>
+          <label htmlFor="displayName">Display Name</label>
           <Input
-            name="username"
-            placeholder="Your username"
+            name="displayName"
+            placeholder="The public name on packs you create"
             minLength={3}
             required
           />

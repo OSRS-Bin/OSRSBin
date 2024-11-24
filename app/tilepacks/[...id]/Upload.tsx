@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -15,8 +14,9 @@ import {
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
+import { uploadTilepack } from "./actions";
 
-const formSchema = z.object({
+const uploadFormSchema = z.object({
   name: z.string().min(1).max(100),
   description: z.string().min(10).max(5000),
   tiles: z
@@ -38,10 +38,12 @@ const formSchema = z.object({
     .refine((o) => tilePackTileSchema.safeParse(o).success === true, {
       message: "Invalid tile data",
     }),
-  image: z.instanceof(File),
+  image: z.instanceof(FileList).refine((o) => o.length === 1, {
+    message: "Please upload an image",
+  }),
 });
 
-export type UploadFormSchema = z.infer<typeof formSchema>;
+export type UploadFormSchema = z.infer<typeof uploadFormSchema>;
 
 const tilePackTileSchema = z
   .array(
@@ -59,39 +61,25 @@ const tilePackTileSchema = z
   .min(1)
   .max(200);
 
-function slugifyTitle(title: string) {
-  let slugged = title
-    .trim()
-    .toLowerCase()
-    .replace("'", "")
-    .replace(/[\p{P}\W]+/gu, "-");
-  if (slugged.startsWith("-")) {
-    slugged = slugged.slice(1);
-  }
-  if (slugged.endsWith("-")) {
-    slugged = slugged.slice(0, -1);
-  }
-  return slugged;
-}
-
 export default function Upload() {
   // 1. Define your form.
   const form = useForm<UploadFormSchema>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(uploadFormSchema),
     defaultValues: {
       name: "",
       description: "",
     },
   });
 
-  // 2. Define a submit handler.
-  function onSubmit(values: UploadFormSchema) {
-    const row = {
-      ...values,
-      slug: slugifyTitle(values.name),
-    };
-    console.log(row);
-  }
+  const onSubmit = async (values: UploadFormSchema) => {
+    const formData = new FormData();
+    formData.append("name", values.name);
+    formData.append("description", values.description);
+    formData.append("tiles", JSON.stringify(values.tiles));
+    formData.append("image", values.image[0]);
+
+    await uploadTilepack(formData);
+  };
 
   return (
     <Form {...form}>
@@ -104,7 +92,28 @@ export default function Upload() {
             <FormItem>
               <FormLabel>Title</FormLabel>
               <FormControl>
-                <Input placeholder="Enter a title" {...field} />
+                <Input
+                  placeholder="Enter a title"
+                  {...field}
+                  autoComplete="off"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="image"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Image</FormLabel>
+              <FormControl>
+                <Input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => field.onChange(e.target.files)}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -137,7 +146,7 @@ export default function Upload() {
                 <Textarea
                   className="font-mono"
                   spellCheck="false"
-                  placeholder="Enter a description"
+                  placeholder="Paste your tile data here"
                   {...field}
                 />
               </FormControl>
