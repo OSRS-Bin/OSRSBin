@@ -1,4 +1,4 @@
-import { type TilePack } from "../lib/types";
+import { type TilePack } from "@/lib/types";
 import Result from "./Result";
 
 export default function Results({ tilePacks }: { tilePacks: TilePack[] }) {

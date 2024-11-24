@@ -1,5 +1,5 @@
-import { tilePacks } from "../../lib/data";
-import Result from "../../components/Result";
+import { tilePacks } from "@/lib/data";
+import Result from "@/components/Result";
 
 const popularTilePacks = tilePacks.slice(0, 3);
 

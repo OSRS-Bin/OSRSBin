@@ -1,7 +1,7 @@
-import { resetPasswordAction } from "../../actions";
-import { FormMessage, Message } from "../../../components/FormMessage";
-import { SubmitButton } from "../../../components/SubmitButton";
-import { Input } from "../../../components/Input";
+import { resetPasswordAction } from "@/app/actions";
+import { FormMessage, Message } from "@/components/FormMessage";
+import { SubmitButton } from "@/components/SubmitButton";
+import { Input } from "@/components/ui/input";
 
 export default async function ResetPassword(
   props: {

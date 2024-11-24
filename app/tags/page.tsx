@@ -1,8 +1,8 @@
-import { tilePacks } from "../../lib/data";
-import { Tag } from "../../lib/types";
+import { tilePacks } from "@/lib/data";
+import { Tag } from "@/lib/types";
 import Link from "next/link";
 import React from "react";
-import { formatNumber } from "../../lib/utils";
+import { formatNumber } from "@/lib/utils";
 
 const tags: Map<Tag, number> = tilePacks.reduce((acc, tilePack) => {
   for (const tag of tilePack.tags) {

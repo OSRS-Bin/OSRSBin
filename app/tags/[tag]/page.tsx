@@ -1,7 +1,7 @@
-import { tags, tilePacks } from "../../../lib/data";
-import { type Tag } from "../../../lib/types";
+import { tags, tilePacks } from "@/lib/data";
+import { type Tag } from "@/lib/types";
 import { notFound } from "next/navigation";
-import ResultList from "../../../components/ResultList";
+import ResultList from "@/components/ResultList";
 
 function tilePacksWithTag(tag: Tag) {
   return tilePacks.filter((tilePack) => tilePack.tags.includes(tag));

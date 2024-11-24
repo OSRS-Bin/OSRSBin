@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./app.css";
-import { appName } from "../lib/constants";
+import { appName } from "@/lib/constants";
 import Header from "./_components/Header";
 import Footer from "./_components/Footer";
 import localFont from "next/font/local";

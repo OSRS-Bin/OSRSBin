@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { appName } from "../../lib/constants";
-import { type Tag } from "../../lib/types";
-import { tags } from "../../lib/data";
+import { appName } from "@/lib/constants";
+import { type Tag } from "@/lib/types";
+import { tags } from "@/lib/data";
 // import { usePathname } from "next/navigation";
 import {
   NavigationMenu,
@@ -11,13 +11,13 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
-} from "../../components/NavigationMenu";
-import { cn } from "../../lib/utils";
+} from "@/components/ui/navigation-menu"
+import { cn } from "@/lib/utils";
 import * as React from "react";
-import { randomInteger } from "../../lib/utils";
-import { signOutAction } from "../actions";
-import { Button } from "../../components/Button";
-import { createClient } from "../../lib/supabase/server";
+import { randomInteger } from "@/lib/utils";
+import { signOutAction } from "@/app/actions";
+import { Button } from "@/components/ui/button";
+import { createClient } from "@/lib/supabase/server";
 
 function findTagBySlug(slug: string): Tag {
   return tags.find((tag) => tag.slug === slug)!;

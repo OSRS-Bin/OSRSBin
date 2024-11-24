@@ -1,7 +1,7 @@
-import { formatNumber } from "../lib/utils";
+import { formatNumber } from "@/lib/utils";
 import TagBadge from "./TagBadge";
 import Link from "next/link";
-import { type TilePack } from "../lib/types";
+import { type TilePack } from "@/lib/types";
 
 type Orientation = "horizontal" | "vertical";
 

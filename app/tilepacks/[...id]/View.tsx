@@ -1,7 +1,7 @@
-import { tilePacks } from "../../../lib/data";
+import { tilePacks } from "@/lib/data";
 import { notFound } from "next/navigation";
-import { formatNumber } from "../../../lib/utils";
-import TagBadge from "../../../components/TagBadge";
+import { formatNumber } from "@/lib/utils";
+import TagBadge from "@/components/TagBadge";
 import { faker } from "@faker-js/faker";
 import CopyButton from "./CopyButton";
 
