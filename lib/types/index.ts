@@ -16,3 +16,5 @@ export type Tag = Tables<"tags">;
 export type Tilepack = Tables<"tilepacks">;
 export type TilepacksTags = Tables<"tilepacks_tags">;
 export type Profile = Tables<"profiles">;
+
+export type TilepackWithTags = Tilepack & { tags: Tag[] };

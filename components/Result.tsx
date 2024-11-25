@@ -1,6 +1,6 @@
 import TagBadge from "./TagBadge";
 import Link from "next/link";
-import { type Tilepack } from "@/lib/types";
+import type { TilepackWithTags, Tilepack } from "@/lib/types";
 import { createClient } from "@/lib/supabase/client";
 import { tilepackImagesBucketName } from "@/lib/constants";
 import { formatNumber, randomInteger } from "@/lib/utils";
@@ -32,7 +32,7 @@ export default async function Result({
   tilePack,
   orientation = "horizontal",
 }: {
-  tilePack: Tilepack;
+  tilePack: TilepackWithTags;
   orientation?: Orientation;
 }) {
   const supabase = createClient();
@@ -74,7 +74,7 @@ export default async function Result({
         </ul>
         <p className="h-full line-clamp-3">{tilePack.description}</p>
         <ul className="flex gap-2 flex-wrap">
-          {fakeTags.slice(0, 3).map((tag) => (
+          {tilePack.tags.map((tag) => (
             <li key={tag.name}>
               <TagBadge tag={tag} />
             </li>

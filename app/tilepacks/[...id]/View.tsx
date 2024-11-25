@@ -11,7 +11,18 @@ async function getTilePackWithId(id: string) {
   const supabase = await createClient();
   let { data: tilepacks, error } = await supabase
     .from("tilepacks")
-    .select("*")
+    .select(
+      `
+      *,
+      tilepacks_tags (
+        tag: tags (
+          id,
+          name,
+          slug
+        )
+      )
+    `
+    )
     .eq("public_id", id)
     .limit(1);
   if (error || !tilepacks || tilepacks.length === 0) {
@@ -19,16 +30,6 @@ async function getTilePackWithId(id: string) {
   }
   return tilepacks[0];
 }
-
-// TODO: make these not fake
-const fakeTags = [
-  { name: "PvM", slug: "pvm" },
-  { name: "Skilling", slug: "skilling" },
-  { name: "Colusseum", slug: "colusseum" },
-  { name: "Minigame", slug: "minigame" },
-  { name: "Quest", slug: "quest" },
-  { name: "Misc", slug: "misc" },
-];
 
 export default async function TilePack({ id }: { id: string }) {
   const tilePack = await getTilePackWithId(id);
@@ -95,12 +96,15 @@ export default async function TilePack({ id }: { id: string }) {
       <img src={imageUrl} alt={tilePack.name} className="w-full h-auto" />
 
       <h2 className="sr-only">Tags</h2>
-      <ul className="flex gap-2">
-        {fakeTags.map((tag) => (
-          <li key={tag.name}>
-            <TagBadge tag={tag} />
-          </li>
-        ))}
+      <ul className="flex gap-2 flex-wrap">
+        {tilePack.tilepacks_tags
+          .map((tag) => tag.tag)
+          .filter((tag) => !!tag)
+          .map((tag) => (
+            <li key={tag.name}>
+              <TagBadge tag={tag} />
+            </li>
+          ))}
       </ul>
 
       {/* Don't need this for MVP. Consider if the value to users is worth the cost moderation efforts and/or money */}

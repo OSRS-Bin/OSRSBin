@@ -1,4 +1,3 @@
-import { notFound } from "next/navigation";
 import ResultList from "@/components/ResultList";
 import { createClient } from "@/lib/supabase/server";
 
@@ -19,10 +18,7 @@ export default async function Tag({
     throw error;
   }
 
-  if (!data) {
-    // what does null mean here?
-    notFound();
-  }
+  console.log(data[0])
 
   return (
     <div>
