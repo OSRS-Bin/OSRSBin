@@ -1,6 +1,9 @@
 import TagBadge from "./TagBadge";
 import Link from "next/link";
 import { type Tilepack } from "@/lib/types";
+import { createClient } from "@/lib/supabase/client";
+import { tilepackImagesBucketName } from "@/lib/constants";
+import { formatNumber, randomInteger } from "@/lib/utils";
 
 type Orientation = "horizontal" | "vertical";
 
@@ -15,6 +18,7 @@ function tilePackLink(tilePack: Tilepack, children: React.ReactNode) {
   );
 }
 
+// TODO: make these not fake
 const fakeTags = [
   { name: "PvM", slug: "pvm" },
   { name: "Skilling", slug: "skilling" },
@@ -24,13 +28,20 @@ const fakeTags = [
   { name: "Misc", slug: "misc" },
 ];
 
-export default function Result({
+export default async function Result({
   tilePack,
   orientation = "horizontal",
 }: {
   tilePack: Tilepack;
   orientation?: Orientation;
 }) {
+  const supabase = createClient();
+  const {
+    data: { publicUrl: imageUrl },
+  } = supabase.storage
+    .from(tilepackImagesBucketName)
+    .getPublicUrl(tilePack.image_name);
+
   return (
     <div
       className={`flex ${
@@ -40,7 +51,7 @@ export default function Result({
       {tilePackLink(
         tilePack,
         <img
-          src={`https://loremflickr.com/640/480?random=${Math.random()}`}
+          src={imageUrl}
           alt={tilePack.name}
           className={`object-cover h-full ${
             orientation == "horizontal" ? "min-w-64 w-64" : "min-h-48 h-48"
@@ -59,7 +70,7 @@ export default function Result({
           <li className="mx-2" role="presentation">
             &bull;
           </li>
-          <li>123 installs</li>
+          <li>{formatNumber(randomInteger(1000, 10000))} installs</li>
         </ul>
         <p className="h-full line-clamp-3">{tilePack.description}</p>
         <ul className="flex gap-2 flex-wrap">

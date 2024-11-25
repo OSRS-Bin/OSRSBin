@@ -3,7 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { generateNewId } from "@/lib/utils";
 import { redirect } from "next/navigation";
-import { tilepackImagesBucketName} from "@/lib/constants";
+import { tilepackImagesBucketName } from "@/lib/constants";
 
 function slugifyTitle(title: string) {
   let slugged = title
@@ -20,44 +20,56 @@ function slugifyTitle(title: string) {
   return slugged;
 }
 
+const getFileExtension = (file: File) => {
+  const name = file.name.trim();
+  const lastDot = name.lastIndexOf(".");
+
+  // Check if dot exists and isn't first/last char
+  if (lastDot > 0 && lastDot < name.length - 1) {
+    return name.slice(lastDot + 1).toLowerCase();
+  }
+
+  return undefined;
+};
+
 export async function uploadTilepack(formData: FormData) {
   const supabase = await createClient();
 
-  // TODO allow anonymous uploads
-  const { data, error: getUserError } = await supabase.auth.getUser();
-  if (getUserError || !data?.user) {
-    redirect("/sign-in");
-  }
+  const { data: userData } = await supabase.auth.getUser();
+  // if anonymous, become null
+  const userId = userData?.user?.id ?? null;
 
+  // TODO: zod validation. can/should we reuse the form schema?
   const name = formData.get("name") as string;
   const description = formData.get("description") as string;
   const tiles = JSON.parse(formData.get("tiles") as string);
   const image = formData.get("image") as File;
 
-  const imagePath = `${generateNewId()}-${image.name}`;
-  const { data: imageData, error: uploadError } = await supabase.storage
+  // upload image
+  const extension = getFileExtension(image);
+  if (!extension) {
+    // this isn't a problem until later: if we get an image with no extension,
+    // the storage server will not know with which content-type to serve it, and
+    // browsers will instead interpret it generic binary data for download
+    throw new Error("File should have extension");
+  }
+  const imageName = `${generateNewId()}${extension}`;
+  const { error: uploadError } = await supabase.storage
     .from(tilepackImagesBucketName)
-    .upload(imagePath, image);
-  console.log("imageData", imageData);
-  // TODO: save imageData.id to the tilepack column. remove image_url, we can just join on the storage table
+    .upload(imageName, image);
 
   if (uploadError) {
     throw uploadError;
   }
 
-  const {
-    data: { publicUrl: imageURL },
-  } = supabase.storage.from(tilepackImagesBucketName).getPublicUrl(imagePath);
-  console.log(imageURL);
-
   const row = {
-    author_id: data.user.id,
+    author_id: userId,
     data: tiles,
     description,
     name,
     public_id: generateNewId(),
     slug: slugifyTitle(name),
-    image_url: imageURL,
+    image_name: imageName,
   };
 
   const { error: insertError } = await supabase.from("tilepacks").insert(row);

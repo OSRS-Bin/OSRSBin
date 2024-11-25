@@ -5,19 +5,22 @@ import TagBadge from "@/components/TagBadge";
 import CopyButton from "./CopyButton";
 import { createClient } from "@/lib/supabase/server";
 import { randomInteger, formatNumber } from "@/lib/utils";
+import { tilepackImagesBucketName } from "@/lib/constants";
 
 async function getTilePackWithId(id: string) {
   const supabase = await createClient();
   let { data: tilepacks, error } = await supabase
     .from("tilepacks")
     .select("*")
-    .eq("public_id", id);
+    .eq("public_id", id)
+    .limit(1);
   if (error || !tilepacks || tilepacks.length === 0) {
     return null;
   }
   return tilepacks[0];
 }
 
+// TODO: make these not fake
 const fakeTags = [
   { name: "PvM", slug: "pvm" },
   { name: "Skilling", slug: "skilling" },
@@ -37,6 +40,13 @@ export default async function TilePack({ id }: { id: string }) {
   if (!tilePack) {
     notFound();
   }
+
+  const supabase = await createClient();
+  const {
+    data: { publicUrl: imageUrl },
+  } = supabase.storage
+    .from(tilepackImagesBucketName)
+    .getPublicUrl(tilePack.image_name);
 
   // TODO load image from storage, load tags from tags table, etc
   return (
@@ -82,11 +92,7 @@ export default async function TilePack({ id }: { id: string }) {
         {tilePack.description}
       </p>
 
-      <img
-        src={tilePack.image_url || "https://loremflickr.com/640/480"}
-        alt={tilePack.name}
-        className="w-full h-auto"
-      />
+      <img src={imageUrl} alt={tilePack.name} className="w-full h-auto" />
 
       <h2 className="sr-only">Tags</h2>
       <ul className="flex gap-2">

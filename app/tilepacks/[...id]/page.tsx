@@ -10,14 +10,7 @@ export default async function ViewOrUpload(props: {
   const id = params.id[0];
 
   if (id === "upload") {
-    const supabase = await createClient();
-    const { data, error } = await supabase.auth.getUser();
-
-    if (error || !data) {
-      redirect("/sign-in");
-    } else {
-      return <Upload />;
-    }
+    return <Upload />;
   } else {
     return <TilePack id={id} />;
   }

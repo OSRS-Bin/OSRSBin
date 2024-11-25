@@ -14,7 +14,10 @@ import {
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
 import { uploadTilepack } from "./actions";
+
+// TODO: add real captcha (hCaptcha?) for anonymous users. all users?
 
 const uploadFormSchema = z.object({
   name: z.string().min(1).max(100),
@@ -40,6 +43,9 @@ const uploadFormSchema = z.object({
     }),
   image: z.instanceof(FileList).refine((o) => o.length === 1, {
     message: "Please upload an image",
+  }),
+  captcha: z.boolean().refine((val) => val === true, {
+    message: "Please solve the captcha",
   }),
 });
 
@@ -150,6 +156,24 @@ export default function Upload() {
                   {...field}
                 />
               </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="captcha"
+          render={({ field }) => (
+            <FormItem className="flex flex-row gap-4 items-center">
+              <FormControl>
+                <Checkbox
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
+              <div className="space-y-1 leading-none">
+                <FormLabel>Captcha</FormLabel>
+              </div>
               <FormMessage />
             </FormItem>
           )}

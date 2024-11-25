@@ -66,8 +66,7 @@ export type Database = {
           data: string
           description: string
           id: number
-          image_id: string | null
-          image_url: string | null
+          image_name: string
           name: string
           public_id: string
           slug: string
@@ -78,8 +77,7 @@ export type Database = {
           data: string
           description: string
           id?: number
-          image_id?: string | null
-          image_url?: string | null
+          image_name: string
           name: string
           public_id: string
           slug: string
@@ -90,8 +88,7 @@ export type Database = {
           data?: string
           description?: string
           id?: number
-          image_id?: string | null
-          image_url?: string | null
+          image_name?: string
           name?: string
           public_id?: string
           slug?: string
