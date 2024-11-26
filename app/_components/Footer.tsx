@@ -4,7 +4,7 @@ import React from "react";
 const siteAuthors = ["Comrade Fund", "Comrade Bits", "ComradeCosmo", "Tim"];
 const copyrightYear = new Date().getFullYear().toString();
 
-export default function Footer() {
+export default function () {
   return (
     <footer className="mx-auto text-center mt-32 py-4">
       <ul className="flex justify-center flex-wrap">
@@ -20,7 +20,9 @@ export default function Footer() {
           </React.Fragment>
         ))}
       </ul>
-      <p className="mt-4">&copy; {copyrightYear} {appName}</p>
+      <p className="mt-4">
+        &copy; {copyrightYear} {appName}
+      </p>
     </footer>
   );
 }

@@ -1,19 +1,18 @@
 "use server";
 
-import { tilePacks } from "@/lib/data";
 import Result from "@/components/Result";
 import { createClient } from "@/lib/supabase/server";
 
-// const popularTilePacks = tilePacks.slice(0, 3);
-
-export default async function PopularSection() {
+export default async function () {
   const supabase = await createClient();
-  let { data: tilepacks, error } = await supabase.from("tilepacks").select("*").limit(3);
-  if (error || !tilepacks) {
-    return null;
-  }
+  let { data: tilepacks, error } = await supabase
+    .from("tilepacks")
+    .select("*, tags (*)")
+    .limit(3);
 
-  const popularTilePacks = tilepacks;
+  if (error) {
+    throw error;
+  }
 
   return (
     <section className="mx-auto">
@@ -25,7 +24,7 @@ export default async function PopularSection() {
       </div>
 
       <ul className="grid grid-rows-3 grid-cols-1 md:grid-cols-3 md:grid-rows-1 gap-4 mt-6">
-        {popularTilePacks.map((tilePack) => (
+        {(tilepacks ?? []).map((tilePack) => (
           <li key={tilePack.id}>
             <Result tilePack={tilePack} orientation="vertical" />
           </li>

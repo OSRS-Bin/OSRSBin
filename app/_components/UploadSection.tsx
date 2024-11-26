@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 
-export default function UploadSection() {
+export default function () {
   return (
     <section className="text-center">
       <h2 className="font-runescape text-6xl leading-[4.5rem] leading text-primary">

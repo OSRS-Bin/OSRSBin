@@ -9,22 +9,34 @@ export default async function Tag({
   const { slug } = await params;
   const supabase = await createClient();
 
-  const { data, error } = await supabase
+  // first, get the tilepacks with the slug tag. the tags property will only
+  // have one tag in it.
+  const { data: matchingTilePacks, error: matchingError } = await supabase
     .from("tilepacks")
     .select(`*, tags!inner (*)`)
     .eq("tags.slug", slug);
 
-  if (error) {
-    throw error;
+  if (matchingError) {
+    throw matchingError;
   }
 
-  console.log(data[0])
+  const tilePackIds = matchingTilePacks.map((tilePack) => tilePack.id);
+
+  // now, run another query, but get the full tags
+  const { data: fullTilePacks, error: fullError } = await supabase
+    .from("tilepacks")
+    .select(`*, tags (*)`)
+    .in("id", tilePackIds);
+
+  if (fullError) {
+    throw fullError;
+  }
 
   return (
     <div>
       <h1 className="font-runescape text-6xl text-primary">{slug}</h1>
 
-      <ResultList tilePacks={data} />
+      <ResultList tilePacks={fullTilePacks} />
     </div>
   );
 }

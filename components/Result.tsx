@@ -18,17 +18,7 @@ function tilePackLink(tilePack: Tilepack, children: React.ReactNode) {
   );
 }
 
-// TODO: make these not fake
-const fakeTags = [
-  { name: "PvM", slug: "pvm" },
-  { name: "Skilling", slug: "skilling" },
-  { name: "Colusseum", slug: "colusseum" },
-  { name: "Minigame", slug: "minigame" },
-  { name: "Quest", slug: "quest" },
-  { name: "Misc", slug: "misc" },
-];
-
-export default async function Result({
+export default async function ({
   tilePack,
   orientation = "horizontal",
 }: {
