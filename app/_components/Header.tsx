@@ -16,6 +16,7 @@ import { signOutAction } from "@/app/actions";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
 import Logo from "@/components/Logo";
+import Title from "@/components/Title";
 
 export default async function Header() {
   const supabase = await createClient();
@@ -45,11 +46,15 @@ export default async function Header() {
   return (
     <header className="font-runescape">
       <div className="bg-header">
-        <nav className="flex justify-between items-center py-2 container mx-auto px-8">
+        <nav
+          className="flex justify-between items-center py-2 container mx-auto px-8"
+          id="header-top"
+        >
           <div className="text-4xl font-runescape">
-            <Link href="/" className="flex gap-4 items-center">
+            <Link href="/" className="flex gap-4 items-center" id="logo-title">
               <Logo className="size-12" />
-              <span>{appName}</span>
+              {/* <span>{appName}</span> */}
+              <Title />
             </Link>
           </div>
           <ul className="flex gap-8 text-3xl text-primary">
@@ -79,7 +84,7 @@ export default async function Header() {
         </nav>
       </div>
       <div className="bg-header-lighter">
-        <nav className="container mx-auto text-2xl px-8">
+        <nav className="container mx-auto text-2xl px-8" id="header-bottom">
           <ul className="flex gap-4 items-center">
             <li className="uppercase px-12 py-1 border-primary border-2">
               <Link href="/tilepacks/upload">Upload</Link>
