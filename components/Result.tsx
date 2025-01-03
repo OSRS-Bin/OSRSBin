@@ -33,44 +33,43 @@ export default async function ({
     .getPublicUrl(tilePack.image_name);
 
   return (
-    <div
-      className={`flex ${
-        orientation == "horizontal" ? "flex-row" : "flex-col"
-      } text-card-foreground bg-card rounded-md overflow-hidden h-full`}
+    <Link
+      href={`/tilepacks/${tilePack.public_id}/${tilePack.slug}`}
+      legacyBehavior
     >
-      {tilePackLink(
-        tilePack,
+      <div
+        className={`flex ${
+          orientation == "horizontal" ? "flex-row" : "flex-col"
+        } text-card-foreground bg-card rounded-md overflow-hidden h-full cursor-pointer`}
+      >
         <img
           src={imageUrl}
           alt={tilePack.name}
-          className={`object-cover h-full ${
-            orientation == "horizontal" ? "min-w-64 w-64" : "min-h-48 h-48"
+          className={`object-cover ${
+            orientation == "horizontal" ? "min-w-64 w-64 h-96 min-h-96" : "min-h-48 h-48"
           }`}
         />
-      )}
-      <div className="p-4 flex flex-col gap-2 h-full">
-        {tilePackLink(
-          tilePack,
+        <div className="p-4 flex flex-col gap-2 justify-stretch">
           <h3 className="font-runescape text-primary text-2xl inline hover:underline">
             {tilePack.name}
           </h3>
-        )}
-        <ul className="flex flex-wrap">
-          <li>{tilePack.author_id}</li>
-          <li className="mx-2" role="presentation">
-            &bull;
-          </li>
-          <li>{formatNumber(randomInteger(1000, 10000))} installs</li>
-        </ul>
-        <p className="h-full line-clamp-3">{tilePack.description}</p>
-        <ul className="flex gap-2 flex-wrap">
-          {tilePack.tags.map((tag) => (
-            <li key={tag.name}>
-              <TagBadge tag={tag} />
+          <ul className="flex flex-wrap">
+            <li>{tilePack.author_id}</li>
+            <li className="mx-2" role="presentation">
+              &bull;
             </li>
-          ))}
-        </ul>
+            <li>{formatNumber(randomInteger(1000, 10000))} installs</li>
+          </ul>
+          <p className="h-full grow line-clamp-3">{tilePack.description}</p>
+          <ul className="flex gap-2 flex-wrap">
+            {tilePack.tags.map((tag) => (
+              <li key={tag.name}>
+                <TagBadge tag={tag} />
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
-    </div>
+    </Link>
   );
 }
