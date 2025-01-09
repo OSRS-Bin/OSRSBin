@@ -16,6 +16,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { uploadTilepack } from "./actions";
+import { createClient } from "@/lib/supabase/client";
+import useSWR from "swr";
+import { Badge } from "@/components/ui/badge";
 
 // TODO: add real captcha (hCaptcha?) for anonymous users. all users?
 
@@ -47,6 +50,7 @@ const uploadFormSchema = z.object({
   captcha: z.boolean().refine((val) => val === true, {
     message: "Please solve the captcha",
   }),
+  categories: z.array(z.string()).min(1).max(7),
 });
 
 export type UploadFormSchema = z.infer<typeof uploadFormSchema>;
@@ -67,15 +71,23 @@ const tilePackTileSchema = z
   .min(1)
   .max(200);
 
+async function fetchTags(key: string) {
+  const supabase = createClient();
+  let { data: tags, error } = await supabase.from("tags").select("*");
+  return tags;
+}
+
 export default function Upload() {
-  // 1. Define your form.
   const form = useForm<UploadFormSchema>({
     resolver: zodResolver(uploadFormSchema),
     defaultValues: {
       name: "",
       description: "",
+      categories: ["foo", "bar"],
     },
   });
+
+  const { data, error, isLoading } = useSWR("juhjgfhg", fetchTags);
 
   const onSubmit = async (values: UploadFormSchema) => {
     const formData = new FormData();
@@ -86,6 +98,14 @@ export default function Upload() {
 
     await uploadTilepack(formData);
   };
+
+  if (error) return <div>failed to load</div>;
+  if (isLoading) return <div>loading...</div>;
+  const tagChildren = data!.map((tag) => (
+    <li key={tag.id} onClick={() => console.log(tag.name)}>
+      <Badge variant="secondary">{tag.name}</Badge>
+    </li>
+  ));
 
   return (
     <Form {...form}>
@@ -174,6 +194,24 @@ export default function Upload() {
               <div className="space-y-1 leading-none">
                 <FormLabel>Captcha</FormLabel>
               </div>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="categories"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Categories</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="Enter a category"
+                  {...field}
+                  autoComplete="off"
+                />
+              </FormControl>
+              <ol className="flex flex-wrap gap-2">{tagChildren}</ol>
               <FormMessage />
             </FormItem>
           )}

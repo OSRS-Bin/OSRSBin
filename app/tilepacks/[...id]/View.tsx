@@ -106,19 +106,6 @@ export default async function TilePack({ id }: { id: string }) {
             </li>
           ))}
       </ul>
-
-      {/* Don't need this for MVP. Consider if the value to users is worth the cost moderation efforts and/or money */}
-      {/* <h2 className="text-4xl font-runescape">Comments</h2>
-      <ul className="grid grid-flow-row gap-4">
-        {Array.from({ length: 5 }).map((_, i) => (
-          <li key={i} className="bg-card text-card-foreground p-4 rounded-lg">
-            <p className="font-runescape text-xl">
-              {faker.internet.userName()}
-            </p>
-            <p>{faker.lorem.sentences(3)}</p>
-          </li>
-        ))}
-      </ul> */}
     </div>
   );
 }
