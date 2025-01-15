@@ -17,7 +17,7 @@ function tilePackLink(tilePack: Tilepack, children: React.ReactNode) {
     </Link>
   );
 }
-export default async function ({
+export default async function Result({
   tilePack,
   orientation = "horizontal",
 }: Readonly<{

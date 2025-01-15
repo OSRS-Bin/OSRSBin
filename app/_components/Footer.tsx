@@ -4,7 +4,7 @@ import React from "react";
 const siteAuthors = ["Comrade Fund", "Comrade Bits", "ComradeCosmo", "Tim"];
 const copyrightYear = new Date().getFullYear().toString();
 
-export default function () {
+export default function Footer() {
   return (
     <footer className="mx-auto text-center mt-32 py-4">
       <ul className="flex justify-center flex-wrap">
