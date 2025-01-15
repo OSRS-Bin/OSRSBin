@@ -1,7 +1,12 @@
 import TilePack from "./View";
 import Upload from "./Upload";
 import { createClient } from "@/lib/supabase/server";
-import { redirect } from "next/navigation";
+
+async function fetchTags() {
+  const supabase = await createClient();
+  let { data: tags, error } = await supabase.from("tags").select("*");
+  return tags ?? [];
+}
 
 export default async function ViewOrUpload(props: {
   params: Promise<{ id: string[] }>;
@@ -10,7 +15,7 @@ export default async function ViewOrUpload(props: {
   const id = params.id[0];
 
   if (id === "upload") {
-    return <Upload />;
+    return <Upload allTags={await fetchTags()} />;
   } else {
     return <TilePack id={id} />;
   }

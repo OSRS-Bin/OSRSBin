@@ -17,10 +17,14 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { uploadTilepack } from "./actions";
 import { createClient } from "@/lib/supabase/client";
-import useSWR from "swr";
 import { Badge } from "@/components/ui/badge";
+import type { Tag } from "@/lib/types";
+import { useEffect, useState } from "react";
+import { X } from "lucide-react";
 
 // TODO: add real captcha (hCaptcha?) for anonymous users. all users?
+
+const maxTags = 7;
 
 const uploadFormSchema = z.object({
   name: z.string().min(1).max(100),
@@ -50,7 +54,7 @@ const uploadFormSchema = z.object({
   captcha: z.boolean().refine((val) => val === true, {
     message: "Please solve the captcha",
   }),
-  categories: z.array(z.string()).min(1).max(7),
+  tags: z.array(z.string()).min(1).max(maxTags),
 });
 
 export type UploadFormSchema = z.infer<typeof uploadFormSchema>;
@@ -71,23 +75,23 @@ const tilePackTileSchema = z
   .min(1)
   .max(200);
 
-async function fetchTags(key: string) {
+async function fetchTags() {
   const supabase = createClient();
   let { data: tags, error } = await supabase.from("tags").select("*");
-  return tags;
+  return tags ?? [];
 }
 
-export default function Upload() {
+export default function Upload({ allTags }: Readonly<{ allTags: Tag[] }>) {
   const form = useForm<UploadFormSchema>({
     resolver: zodResolver(uploadFormSchema),
     defaultValues: {
       name: "",
       description: "",
-      categories: ["foo", "bar"],
+      tags: [],
     },
   });
-
-  const { data, error, isLoading } = useSWR("juhjgfhg", fetchTags);
+  const [remainingTags, setRemainingTags] = useState<Tag[]>([...allTags]);
+  const tagsByName = new Map(allTags.map((tag) => [tag.name, tag]));
 
   const onSubmit = async (values: UploadFormSchema) => {
     const formData = new FormData();
@@ -95,15 +99,29 @@ export default function Upload() {
     formData.append("description", values.description);
     formData.append("tiles", JSON.stringify(values.tiles));
     formData.append("image", values.image[0]);
+    formData.append(
+      "tags",
+      JSON.stringify(values.tags.map((tag) => tagsByName.get(tag)!))
+    );
 
     await uploadTilepack(formData);
   };
 
-  if (error) return <div>failed to load</div>;
-  if (isLoading) return <div>loading...</div>;
-  const tagChildren = data!.map((tag) => (
-    <li key={tag.id} onClick={() => console.log(tag.name)}>
-      <Badge variant="secondary">{tag.name}</Badge>
+  if (remainingTags.length === 0) return <div>failed to load</div>;
+
+  const tagChildren = remainingTags.map((tag) => (
+    <li
+      key={tag.id}
+      onClick={() => {
+        console.log(tag.name);
+        const tags = [...form.getValues("tags"), tag.name];
+        form.setValue("tags", tags);
+        setRemainingTags(remainingTags.filter((t) => t.id !== tag.id));
+      }}
+    >
+      <Badge variant="outline" className="cursor-pointer">
+        {tag.name}
+      </Badge>
     </li>
   ));
 
@@ -200,18 +218,48 @@ export default function Upload() {
         />
         <FormField
           control={form.control}
-          name="categories"
+          name="tags"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Categories</FormLabel>
+              <FormLabel>Tags</FormLabel>
               <FormControl>
                 <Input
                   placeholder="Enter a category"
                   {...field}
                   autoComplete="off"
+                  readOnly
+                  type="hidden"
                 />
               </FormControl>
-              <ol className="flex flex-wrap gap-2">{tagChildren}</ol>
+              <ol className="flex flex-wrap gap-2">
+                {form.getValues("tags").map((tag, i) => (
+                  <li key={tag}>
+                    <Badge variant="secondary" className="flex gap-2">
+                      <span>{tag}</span>{" "}
+                      <X
+                        size="18"
+                        className="cursor-pointer"
+                        onClick={() => {
+                          const tags = form
+                            .getValues("tags")
+                            .filter((_, j) => i !== j);
+                          form.setValue("tags", tags);
+                          setRemainingTags([
+                            ...remainingTags,
+                            tagsByName.get(tag)!,
+                          ]);
+                        }}
+                      />
+                    </Badge>
+                  </li>
+                ))}
+              </ol>
+              {form.getValues("tags").length < maxTags && (
+                <ol className="flex flex-wrap gap-2 max-h-48 min-h-32 overflow-y-scroll p-2 border rounded-lg">
+                  {tagChildren}
+                </ol>
+              )}
+
               <FormMessage />
             </FormItem>
           )}

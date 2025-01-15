@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {  
+@layer base {
   :root {
     --background: #11141b;
     --foreground: #f1f5f9;
@@ -20,6 +20,8 @@
     --accent-foreground: #f1f5f9;
     --input: #11141b;
     --border: #94a3b8;
+    --destructive: theme(colors.red.500);
+    --destructive-foreground: #f1f5f9;
     --radius: 0.5rem;
   }
 }
