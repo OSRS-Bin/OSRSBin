@@ -3,7 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import ResultList from "@/components/ResultList";
 
-export default async function () {
+export default async function Tilepacks() {
   const supabase = await createClient();
   let { data: tilePacks, error } = await supabase
     .from("tilepacks")
