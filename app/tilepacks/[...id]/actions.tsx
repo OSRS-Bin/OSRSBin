@@ -4,6 +4,8 @@ import { createClient } from "@/lib/supabase/server";
 import { generateNewId } from "@/lib/utils";
 import { redirect } from "next/navigation";
 import { tilepackImagesBucketName } from "@/lib/constants";
+import { Tag } from "@/lib/types";
+// import type Tile
 
 function slugifyTitle(title: string) {
   let slugged = title
@@ -44,6 +46,7 @@ export async function uploadTilepack(formData: FormData) {
   const description = formData.get("description") as string;
   const tiles = JSON.parse(formData.get("tiles") as string);
   const image = formData.get("image") as File;
+  const tags: Tag[] = JSON.parse(formData.get("tags") as string);
 
   // upload image
   const extension = getFileExtension(image);
@@ -72,10 +75,24 @@ export async function uploadTilepack(formData: FormData) {
     image_name: imageName,
   };
 
-  const { error: insertError } = await supabase.from("tilepacks").insert(row);
+  const { data: tilepack, error: insertError } = await supabase
+    .from("tilepacks")
+    .insert(row)
+    .select();
 
   if (insertError) {
     throw insertError;
+  }
+
+  const { error: tagsError } = await supabase.from("tilepacks_tags").insert(
+    tags.map((tag) => ({
+      tilepack_id: tilepack[0].id,
+      tag_id: tag.id,
+    }))
+  );
+
+  if (tagsError) {
+    throw tagsError;
   }
 
   redirect(`/tilepacks/${row.public_id}/${row.slug}`);

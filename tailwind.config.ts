@@ -52,6 +52,10 @@ const config: Config = {
           DEFAULT: "hsl(from var(--card) h s l / <alpha-value>)",
           foreground: "hsl(from var(--card-foreground) h s l / <alpha-value>)",
         },
+        destructive: {
+          DEFAULT: "hsl(from var(--destructive) h s l / <alpha-value>)",
+          foreground: "hsl(from var(--destructive-foreground) h s l / <alpha-value>)",
+        },
         border: "hsl(from var(--border) h s l / <alpha-value>)",
       },
       fontFamily: {
@@ -59,8 +63,6 @@ const config: Config = {
       },
     },
   },
-  plugins: [
-    tailwindAnimate,
-  ],
+  plugins: [tailwindAnimate],
 };
 export default config;
