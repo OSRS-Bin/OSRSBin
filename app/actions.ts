@@ -1,5 +1,9 @@
 "use server";
 
+// IMPORTANT: We need to revisit this logic after the React 19 upgrade.
+// See <https://supabase.com/docs/guides/getting-started/tutorials/with-nextjs>
+// for example code
+
 import { encodedRedirect } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/server";
 import { headers } from "next/headers";
@@ -13,7 +17,8 @@ export const signUpAction = async (formData: FormData) => {
   const origin = (await headers()).get("origin");
 
   if (!email || !password || !displayName) {
-    return { error: "Email, password, and username are required" };
+    throw new Error("Email, password, and username are required");
+    // return { error: "Email, password, and username are required" };
   }
 
   const { error } = await supabase.auth.signUp({
@@ -27,9 +32,10 @@ export const signUpAction = async (formData: FormData) => {
 
   if (error) {
     console.error(error.code + " " + error.message);
-    return encodedRedirect("error", "/sign-up", error.message);
+    encodedRedirect("error", "/sign-up", error.message);
+    // redirect("/error")
   } else {
-    return encodedRedirect(
+    encodedRedirect(
       "success",
       "/sign-up",
       "Thanks for signing up! Please check your email for a verification link."
